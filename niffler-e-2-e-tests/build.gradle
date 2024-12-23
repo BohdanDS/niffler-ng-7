@@ -84,6 +84,8 @@ sourceSets {
 }
 
 dependencies {
+    //Faker
+
     // Logs
     testImplementation "ch.qos.logback:logback-classic:${logbackVersion}"
     testImplementation "org.slf4j:slf4j-api:${slf4jVersion}"
