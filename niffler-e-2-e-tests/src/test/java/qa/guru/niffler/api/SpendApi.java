@@ -7,7 +7,7 @@ import retrofit2.http.POST;
 
 public interface SpendApi {
 
-    @POST("/internal/v2/spends")
+    @POST("/internal/spends/add")
     Call<SpendJson> addSpend(@Body SpendJson spend);
 
 

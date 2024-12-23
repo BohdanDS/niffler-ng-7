@@ -27,7 +27,7 @@ public class CreateSpendingExtension implements BeforeEachCallback {
                                     false
 
                             ),
-                            CurrencyValues.RUB,
+                            CurrencyValues.EUR,
                             anno.amount(),
                             anno.description(),
                             anno.username()
