@@ -34,7 +34,7 @@ public class CreateSpendingExtension implements BeforeEachCallback {
                     );
                 context.getStore(NAMESPACE).put(
                         context.getUniqueId(),
-                        spendApiClient.createSpend(spend)
+                        spendApiClient.addSpend(spend)
                 );
                 });
 

@@ -12,8 +12,8 @@ public class SpendingWebTest {
 
     @ExtendWith(BrowserExtension.class)
     @Spending(
-            amount = 22,
-            category = "Education",
+            amount = 5622,
+            category = "Education-test",
             description = "DEBUG",
             username = "bohdan"
     )

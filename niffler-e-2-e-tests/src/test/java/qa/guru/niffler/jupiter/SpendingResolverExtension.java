@@ -3,11 +3,8 @@ package qa.guru.niffler.jupiter;
 import org.junit.jupiter.api.extension.*;
 import qa.guru.niffler.model.SpendJson;
 
-import java.util.Date;
 
 public class SpendingResolverExtension implements ParameterResolver {
-
-    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendingResolverExtension.class);
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {

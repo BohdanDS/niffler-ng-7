@@ -2,9 +2,10 @@ package qa.guru.niffler.page;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.github.javafaker.Faker;
+import static com.codeborne.selenide.Condition.text;
 
 import static com.codeborne.selenide.Selenide.$;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RegisterPage {
 
@@ -38,10 +39,19 @@ public class RegisterPage {
         return new RegisterPage();
     }
 
-    public LoginPage submitRegistration(){
+    public RegisterPage submitRegistration(){
         submitBtn.click();
+        return this;
+    }
+    public void checkSuccessfulRegistrationMessage() {
+        assertTrue(formParagraphSuccess.isDisplayed());
+    }
+    public void validationMessageIsDisplayed() {
+        assertTrue(errorMessage.isDisplayed());
+    }
 
-        return new LoginPage();
+    public void checkUnsuccessfulRegistrationIfPasswordAndConfirmPasswordAreNotEqual(String text) {
+        errorMessage.shouldBe(text(text));
     }
 
 }
