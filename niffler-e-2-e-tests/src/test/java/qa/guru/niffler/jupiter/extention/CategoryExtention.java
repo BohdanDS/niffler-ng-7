@@ -1,18 +1,19 @@
-package qa.guru.niffler.jupiter;
+package qa.guru.niffler.jupiter.extention;
 
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.support.AnnotationSupport;
 import qa.guru.niffler.api.SpendApiClient;
+import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.model.CategoryJson;
 import org.junit.jupiter.api.extension.*;
 
-public class CreateCategoryExtention implements BeforeEachCallback, AfterTestExecutionCallback {
+public class CategoryExtention implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
 
     Faker faker = new Faker();
 
-    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CreateCategoryExtention.class);
+    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CategoryExtention.class);
 
     private final SpendApiClient spendApiClient = new SpendApiClient();
 
@@ -31,7 +32,7 @@ public class CreateCategoryExtention implements BeforeEachCallback, AfterTestExe
                             spendApiClient.createCategory(category)
                     );
                     if (anno.archived()) {
-                        CategoryJson storedCategory = context.getStore(CreateCategoryExtention.NAMESPACE).get(context.getUniqueId(),CategoryJson.class);
+                        CategoryJson storedCategory = context.getStore(NAMESPACE).get(context.getUniqueId(), CategoryJson.class);
 
                         CategoryJson archivedCategory = new CategoryJson(
                                 storedCategory.id(),
@@ -45,9 +46,19 @@ public class CreateCategoryExtention implements BeforeEachCallback, AfterTestExe
     }
 
     @Override
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return parameterContext.getParameter().getType().isAssignableFrom(CategoryJson.class);
+    }
+
+    @Override
+    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        return extensionContext.getStore(NAMESPACE).get(extensionContext.getUniqueId(), CategoryJson.class);
+    }
+
+    @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
-        CategoryJson storedCategory = context.getStore(CreateCategoryExtention.NAMESPACE).get(context.getUniqueId(),CategoryJson.class);
-        if (!storedCategory.archived()){
+        CategoryJson storedCategory = context.getStore(NAMESPACE).get(context.getUniqueId(), CategoryJson.class);
+        if (!storedCategory.archived()) {
             CategoryJson archivedCategory = new CategoryJson(
                     storedCategory.id(),
                     storedCategory.name(),
@@ -57,4 +68,5 @@ public class CreateCategoryExtention implements BeforeEachCallback, AfterTestExe
             spendApiClient.updateCategory(archivedCategory);
         }
     }
+
 }

@@ -1,18 +1,18 @@
-package qa.guru.niffler.jupiter;
+package qa.guru.niffler.jupiter.extention;
 
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-public interface SuiteExtention extends BeforeAllCallback {
+public interface SuiteExtension extends BeforeAllCallback {
 
 
     @Override
-    default void beforeAll(ExtensionContext context) throws Exception{
-        final ExtensionContext rootContext =  context.getRoot();
+    default void beforeAll(ExtensionContext context) throws Exception {
+        final ExtensionContext rootContext = context.getRoot();
         rootContext.getStore(ExtensionContext.Namespace.GLOBAL)
                 .getOrComputeIfAbsent(
                         this.getClass(),
-                        key ->{
+                        key -> {
                             beforeSuit(rootContext);
                             return new ExtensionContext.Store.CloseableResource() {
                                 @Override
@@ -22,9 +22,11 @@ public interface SuiteExtention extends BeforeAllCallback {
                             };
                         }
                 );
-    };
+    }
 
-    default void beforeSuit(ExtensionContext context){}
+    default void beforeSuit(ExtensionContext context) {
+    }
 
-    default void afterSuit(){}
+    default void afterSuit() {
+    }
 }

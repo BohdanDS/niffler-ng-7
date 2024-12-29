@@ -3,8 +3,8 @@ package qa.guru.niffler.test.web;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import qa.guru.niffler.jupiter.BrowserExtension;
-import qa.guru.niffler.jupiter.Spending;
+import qa.guru.niffler.jupiter.extention.BrowserExtension;
+import qa.guru.niffler.jupiter.annotation.Spending;
 import qa.guru.niffler.model.SpendJson;
 import qa.guru.niffler.page.LoginPage;
 
