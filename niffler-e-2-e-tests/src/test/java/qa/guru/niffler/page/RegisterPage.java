@@ -2,9 +2,11 @@ package qa.guru.niffler.page;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import com.github.javafaker.Faker;
+import static com.codeborne.selenide.Condition.text;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RegisterPage {
 
@@ -38,10 +40,19 @@ public class RegisterPage {
         return new RegisterPage();
     }
 
-    public LoginPage submitRegistration(){
+    public RegisterPage submitRegistration(){
         submitBtn.click();
+        return this;
+    }
+    public void checkSuccessfulRegistrationMessage() {
+        formParagraphSuccess.shouldBe(visible);
+    }
+    public void validationMessageIsDisplayed() {
+        errorMessage.shouldBe(visible);
+    }
 
-        return new LoginPage();
+    public void checkErrorMessage(String text) {
+        errorMessage.shouldBe(text(text));
     }
 
 }
