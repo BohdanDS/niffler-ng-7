@@ -9,11 +9,11 @@ import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.model.CategoryJson;
 import org.junit.jupiter.api.extension.*;
 
-public class CategoryExtention implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
+public class CategoryExtension implements BeforeEachCallback, AfterTestExecutionCallback, ParameterResolver {
 
     Faker faker = new Faker();
 
-    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CategoryExtention.class);
+    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(CategoryExtension.class);
 
     private final SpendApiClient spendApiClient = new SpendApiClient();
 
