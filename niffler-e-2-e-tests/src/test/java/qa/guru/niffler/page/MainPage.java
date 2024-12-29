@@ -6,8 +6,7 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class MainPage {
     private final ElementsCollection tableRows = $("#spendings tbody").$$("tr");
@@ -26,9 +25,8 @@ public class MainPage {
     }
 
     public void checkSuccessLogin() {
-        assertAll(
-                () -> assertTrue(statistic.isDisplayed()),
-                () -> assertTrue(spendings.isDisplayed())
-        );
+        statistic.shouldBe(visible);
+        spendings.shouldBe(visible);
     }
 }
+

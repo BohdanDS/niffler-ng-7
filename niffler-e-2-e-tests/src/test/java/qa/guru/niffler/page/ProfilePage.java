@@ -15,14 +15,14 @@ public class ProfilePage {
             uploadNewImageBtn = $(".css-1f8fote"),
             nameInput = $("input[id='name']"),
             saveChangesBtn = $("button[id=':r9:']"),
-            categoryInput = $("input[id='category']"),
+            categoryInput = $("#category"),
             showArchivedCheckbox = $("input[type='checkbox']");
 
     private final ElementsCollection categoryList = $$(".css-17u3xlq");
 
 
-    public ProfilePage uploadImage(File file){
-        uploadNewImageBtn.uploadFile(file);
+    public ProfilePage uploadImage(String path){
+        uploadNewImageBtn.uploadFromClasspath(path);
         return this;
     }
 

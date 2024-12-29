@@ -24,7 +24,7 @@ public class CreateCategoryExtention implements BeforeEachCallback, AfterTestExe
                             null,
                             faker.lorem().characters(0, 20),
                             anno.username(),
-                            anno.archived()
+                            false
                     );
                     context.getStore(NAMESPACE).put(
                             context.getUniqueId(),
