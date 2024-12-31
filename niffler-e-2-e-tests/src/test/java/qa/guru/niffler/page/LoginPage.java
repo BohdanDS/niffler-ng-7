@@ -1,12 +1,16 @@
 package qa.guru.niffler.page;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import qa.guru.niffler.config.Config;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 public class LoginPage {
+
+    private static final Config instance = Config.getInstance();
 
     private final SelenideElement
             usernameInput = $("input[name='username']"),
@@ -15,6 +19,7 @@ public class LoginPage {
             errorMessage = $(".form__error");
 
     public MainPage login(String username, String password){
+        Selenide.open(instance.frontUrl());
         usernameInput.setValue(username);
         passwordInput.setValue(password);
         submitBtn.click();
