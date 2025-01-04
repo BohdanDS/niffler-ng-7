@@ -6,6 +6,19 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class UserProfileMenuComponent {
     private final SelenideElement
-            profileBtn = $("a[href='/profile']");
+            profileLink = $("a[href='/profile']"),
+            friendsLink = $("a[href='/people/friends']"),
+            allPeopleLink = $("a[href='/people/all']");
 
+    public void clickProfileLink() {
+        profileLink.click();
+    }
+
+    public void clickFriendsLink() {
+        friendsLink.click();
+    }
+
+    public void clickAllPeopleLink() {
+        allPeopleLink.click();
+    }
 }

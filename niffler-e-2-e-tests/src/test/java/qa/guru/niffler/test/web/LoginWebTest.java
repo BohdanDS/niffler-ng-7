@@ -5,10 +5,13 @@ import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import qa.guru.niffler.jupiter.extention.BrowserExtension;
+import qa.guru.niffler.jupiter.extention.UsersQueueExtension;
+import qa.guru.niffler.jupiter.extention.UsersQueueExtension.UserType;
+import qa.guru.niffler.jupiter.extention.UsersQueueExtension.StaticUser;
 import qa.guru.niffler.page.LoginPage;
 import qa.guru.niffler.page.MainPage;
 
-@ExtendWith(BrowserExtension.class)
+@ExtendWith({BrowserExtension.class, UsersQueueExtension.class})
 public class LoginWebTest {
 
     private static final String USER_NAME = "Bohdan";
@@ -20,18 +23,17 @@ public class LoginWebTest {
     LoginPage loginPage = new LoginPage();
 
     @Test
-    public void successLogin(){
+    public void successLogin() {
         Selenide.open("http://127.0.0.1:9000/login");
         loginPage.login(USER_NAME, PASSWORD);
         mainPage.checkSuccessLogin();
     }
 
     @Test
-    public void loginWithBadCredentials(){
+    public void loginWithBadCredentials(@UserType(UserType.Type.EMPTY) StaticUser user) {
         Selenide.open("http://127.0.0.1:9000/login");
-        loginPage.login(USER_NAME, INVALID_PASSWORD);
+        loginPage.login(user.username(), user.password());
         loginPage.validationMessageIsDisplayed();
-
     }
 
 }
