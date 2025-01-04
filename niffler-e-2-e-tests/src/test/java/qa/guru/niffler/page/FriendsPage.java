@@ -27,7 +27,7 @@ public class FriendsPage {
     }
 
     public void setValueIntoSearch(String value) {
-        searchInput.setValue(value).sendKeys(Keys.ENTER);
+        searchInput.setValue(value).pressEnter();
     }
 
     public void verifyOutcomeRequest(String userName) {

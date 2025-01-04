@@ -90,13 +90,15 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterEachCallbac
     public void afterEach(ExtensionContext context) throws Exception {
 
         Map<UserType, StaticUser> usersfromStoreMap = context.getStore(NAMESPACE).get(context.getUniqueId(), Map.class);
-        for (Map.Entry<UserType, StaticUser> e : usersfromStoreMap.entrySet()) {
-            StaticUser user = e.getValue();
-            UserType userType = e.getKey();
+            if (usersfromStoreMap != null){
+                for (Map.Entry<UserType, StaticUser> e : usersfromStoreMap.entrySet()) {
+                    StaticUser user = e.getValue();
+                    UserType userType = e.getKey();
 
-            Queue<StaticUser> queue = getQueueByUserType(userType.value());
-            queue.add(user);
-        }
+                    Queue<StaticUser> queue = getQueueByUserType(userType.value());
+                    queue.add(user);
+                }
+            }
     }
 
     @Override
