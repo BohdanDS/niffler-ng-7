@@ -2,20 +2,20 @@ package qa.guru.niffler.test.web;
 
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import qa.guru.niffler.jupiter.extention.BrowserExtension;
+import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.jupiter.annotation.Spending;
+import qa.guru.niffler.jupiter.extention.meta.User;
+import qa.guru.niffler.jupiter.extention.meta.WebTest;
 import qa.guru.niffler.model.SpendJson;
 import qa.guru.niffler.page.LoginPage;
 
+@WebTest
 public class SpendingWebTest {
 
-    @ExtendWith(BrowserExtension.class)
-    @Spending(
-            amount = 5622,
-            category = "Education-test",
-            description = "DEBUG",
-            username = "bohdan"
+    @User(
+            userName = "bohdan",
+            categories = @Category(archived = true),
+            spendings = @Spending(amount = 1003, category = "test-category", description = "des")
     )
     @Test
     public void changeCategoryDescriptionFromTableViewTest(SpendJson spendJson) {
@@ -28,6 +28,5 @@ public class SpendingWebTest {
                 .updateDescription(newDescription)
                 .clickSaveBtn().
                 checkUpdatedDescription(newDescription);
-
     }
 }

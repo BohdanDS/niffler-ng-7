@@ -14,6 +14,15 @@ enum LocalConfig implements Config {
     }
 
     @Override
+    public String authUrl(){return "http://127.0.0.1:8090";}
+
+    @Override
+    public String gateWayUrl(){return "http://127.0.0.1:8090";}
+
+    @Override
+    public String userDataUrl(){return "http://127.0.0.1:8089";}
+
+    @Override
     public String ghUrl() {
         return "https://api.github.com/";
     }

@@ -3,11 +3,10 @@ package qa.guru.niffler.test.web;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import qa.guru.niffler.jupiter.extention.BrowserExtension;
+import qa.guru.niffler.jupiter.extention.meta.WebTest;
 import qa.guru.niffler.page.RegisterPage;
 
-@ExtendWith(BrowserExtension.class)
+@WebTest
 @DisplayName("Registrations Web tests")
 public class RegistrationWebTest {
 

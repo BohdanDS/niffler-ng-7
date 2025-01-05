@@ -5,7 +5,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 public interface SuiteExtension extends BeforeAllCallback {
 
-
     @Override
     default void beforeAll(ExtensionContext context) throws Exception {
         final ExtensionContext rootContext = context.getRoot();
