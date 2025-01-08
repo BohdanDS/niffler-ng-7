@@ -4,6 +4,7 @@ import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 import qa.guru.niffler.api.SpendApiClient;
 import qa.guru.niffler.jupiter.annotation.Spending;
+import qa.guru.niffler.jupiter.extention.meta.User;
 import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.CurrencyValues;
 import qa.guru.niffler.model.SpendJson;
@@ -17,27 +18,30 @@ public class SpendingExtension implements BeforeEachCallback, ParameterResolver 
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), Spending.class)
+        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), User.class)
                 .ifPresent(anno -> {
-                    SpendJson spend = new SpendJson(
-                            null,
-                            new Date(),
-                            new CategoryJson(
-                                    null,
-                                    anno.category(),
-                                    anno.username(),
-                                    false
+                    if (anno.spendings().length > 0) {
+                        Spending annoSpending = anno.spendings()[0];
+                        SpendJson spend = new SpendJson(
+                                null,
+                                new Date(),
+                                new CategoryJson(
+                                        null,
+                                        annoSpending.category(),
+                                        anno.userName(),
+                                        false
 
-                            ),
-                            CurrencyValues.EUR,
-                            anno.amount(),
-                            anno.description(),
-                            anno.username()
-                    );
-                    context.getStore(NAMESPACE).put(
-                            context.getUniqueId(),
-                            spendApiClient.addSpend(spend)
-                    );
+                                ),
+                                CurrencyValues.EUR,
+                                annoSpending.amount(),
+                                annoSpending.description(),
+                                anno.userName()
+                        );
+                        context.getStore(NAMESPACE).put(
+                                context.getUniqueId(),
+                                spendApiClient.addSpend(spend)
+                        );
+                    }
                 });
 
     }

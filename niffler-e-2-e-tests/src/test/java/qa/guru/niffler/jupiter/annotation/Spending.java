@@ -18,6 +18,4 @@ public @interface Spending {
 
     String description();
 
-    String username();
-
 }

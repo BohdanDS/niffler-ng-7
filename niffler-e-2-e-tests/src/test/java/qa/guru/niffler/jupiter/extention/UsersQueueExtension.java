@@ -23,7 +23,6 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterEachCallbac
             String outcome_requests) {
     }
 
-
     private final static Queue<StaticUser> EMPTY_USER = new ConcurrentLinkedQueue<>();
     private final static Queue<StaticUser> USERS_WITH_FRIEND = new ConcurrentLinkedQueue<>();
     private final static Queue<StaticUser> USERS_WITH_INCOME_REQUEST = new ConcurrentLinkedQueue<>();
@@ -60,7 +59,11 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterEachCallbac
 
         Map<UserType, StaticUser> usersMap = new HashMap<>();
 
-        List<Parameter> parameters = Arrays.stream(context.getRequiredTestMethod().getParameters()).filter(parameter -> AnnotationSupport.isAnnotated(parameter, UserType.class)).toList();
+        List<Parameter> parameters = Arrays.stream(context.getRequiredTestMethod()
+                        .getParameters())
+                .filter(parameter -> AnnotationSupport.isAnnotated(parameter, UserType.class) && parameter.getType()
+                        .isAssignableFrom(StaticUser.class))
+                .toList();
 
         parameters.forEach(parameter -> {
             UserType userType = parameter.getAnnotation(UserType.class);
@@ -85,20 +88,19 @@ public class UsersQueueExtension implements BeforeEachCallback, AfterEachCallbac
 
     }
 
-
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
 
         Map<UserType, StaticUser> usersfromStoreMap = context.getStore(NAMESPACE).get(context.getUniqueId(), Map.class);
-            if (usersfromStoreMap != null){
-                for (Map.Entry<UserType, StaticUser> e : usersfromStoreMap.entrySet()) {
-                    StaticUser user = e.getValue();
-                    UserType userType = e.getKey();
+        if (usersfromStoreMap != null) {
+            for (Map.Entry<UserType, StaticUser> e : usersfromStoreMap.entrySet()) {
+                StaticUser user = e.getValue();
+                UserType userType = e.getKey();
 
-                    Queue<StaticUser> queue = getQueueByUserType(userType.value());
-                    queue.add(user);
-                }
+                Queue<StaticUser> queue = getQueueByUserType(userType.value());
+                queue.add(user);
             }
+        }
     }
 
     @Override
