@@ -10,11 +10,18 @@ public interface Config {
 
     String spendUrl();
 
+    String spendJdbcUrl();
+
     String authUrl();
+
+    String authJdbcUrl();
 
     String gateWayUrl();
 
     String userDataUrl();
+
+    String userDataJdbcUrl();
+    String currencyJdbcUrl();
 
     String ghUrl();
 }
