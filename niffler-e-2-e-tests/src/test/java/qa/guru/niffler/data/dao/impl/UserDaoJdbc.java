@@ -18,7 +18,7 @@ public class UserDaoJdbc implements UserDataUserDao {
     public UserEntity createUser(UserEntity userEntity) {
         try (Connection connection = Databases.connection(CFG.userDataJdbcUrl())) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO user (username, currency, firstname, surname, photo, photo_small, full_name)"
+                    "INSERT INTO \"user\" (username, currency, firstname, surname, photo, photo_small, full_name)"
                             + "VALUES (?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             )) {
