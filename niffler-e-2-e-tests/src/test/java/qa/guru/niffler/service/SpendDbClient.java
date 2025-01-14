@@ -34,9 +34,7 @@ public class SpendDbClient {
     public CategoryJson createCategory(CategoryJson categoryJson) {
         CategoryEntity categoryEntity = CategoryEntity.fromJson(categoryJson);
 
-        return transaction(connection -> {
-            return CategoryJson.fromEntity(new CategoryDaoJdbc(connection).createCategory(categoryEntity));
-        }, CFG.spendJdbcUrl());
+        return transaction(connection -> CategoryJson.fromEntity(new CategoryDaoJdbc(connection).createCategory(categoryEntity)), CFG.spendJdbcUrl());
 
 
     }
@@ -45,9 +43,7 @@ public class SpendDbClient {
 
         CategoryEntity categoryEntity = CategoryEntity.fromJson(categoryJson);
 
-        transaction(connection -> {
-            new CategoryDaoJdbc(connection).deleteCategory(categoryEntity);
-        }, CFG.spendJdbcUrl());
+        transaction(connection -> new CategoryDaoJdbc(connection).deleteCategory(categoryEntity), CFG.spendJdbcUrl(), 1);
     }
 
 }
