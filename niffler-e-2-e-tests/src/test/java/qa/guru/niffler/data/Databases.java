@@ -23,7 +23,7 @@ public class Databases {
     private static final Map<String, DataSource> dataSources = new ConcurrentHashMap<>();
     private static final Map<Long, Map<String, Connection>> threadConnection = new ConcurrentHashMap<>();
 
-    public record XaFunction<T>(Function<Connection, T> function, String jdbcUrl) {
+    public record XaFunction<T>(Function<Connection, T> function, String jdbcUrl, int isolationLevel) {
     }
 
     public record XaConsumer(Consumer<Connection> function, String jdbcUrl) {
@@ -53,11 +53,12 @@ public class Databases {
         }
     }
 
-    public static void transaction(Consumer<Connection> consumer, String jdbcUrl) {
+    public static void transaction(Consumer<Connection> consumer, String jdbcUrl, int isolationLevel) {
         Connection connection = null;
         try {
             connection = connection(jdbcUrl);
             connection.setAutoCommit(false);
+            connection.setTransactionIsolation(isolationLevel);
             consumer.accept(connection);
             connection.commit();
             connection.setAutoCommit(true);
@@ -83,6 +84,10 @@ public class Databases {
             userTransaction.begin();
             T result = null;
             for (XaFunction<T> action : actions) {
+                try (Connection connection = connection(action.jdbcUrl)) {
+                    connection.setAutoCommit(false);
+                    connection.setTransactionIsolation(action.isolationLevel);
+                }
                 result = action.function.apply(connection(action.jdbcUrl));
             }
 
