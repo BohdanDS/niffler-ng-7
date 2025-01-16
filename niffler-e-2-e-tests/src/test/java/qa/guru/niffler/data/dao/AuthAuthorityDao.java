@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface AuthAuthorityDao {
 
-    void createAuthority(AuthAuthorityEntity authAuthorityEntity);
+    void createAuthority(AuthAuthorityEntity... authAuthorityEntities);
 
     List<AuthAuthorityEntity> getAuthorityByUserId(UUID id);
 

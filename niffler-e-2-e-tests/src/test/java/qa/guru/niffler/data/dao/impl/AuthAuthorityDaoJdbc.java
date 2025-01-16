@@ -20,15 +20,21 @@ public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
 
 
     @Override
-    public void createAuthority(AuthAuthorityEntity authAuthorityEntity) {
+    public void createAuthority(AuthAuthorityEntity... authAuthorityEntities) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO \"authority\" (user_id, authority)" +
                         "VALUES(?, ?)"
         )) {
 
-            preparedStatement.setObject(1, authAuthorityEntity.getUser().getId());
-            preparedStatement.setString(2, authAuthorityEntity.getAuthority().name());
-            preparedStatement.executeUpdate();
+            for (AuthAuthorityEntity authorityEntity : authAuthorityEntities){
+                preparedStatement.setObject(1, authorityEntity.getUser().getId());
+                preparedStatement.setString(2, authorityEntity.getAuthority().name());
+                preparedStatement.addBatch();
+                preparedStatement.clearParameters();
+            }
+
+            preparedStatement.executeBatch();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
