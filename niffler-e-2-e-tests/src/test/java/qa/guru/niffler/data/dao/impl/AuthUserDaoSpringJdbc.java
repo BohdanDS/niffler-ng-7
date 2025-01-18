@@ -11,6 +11,7 @@ import qa.guru.niffler.data.mapper.AuthUserEntityRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,7 +30,9 @@ public class AuthUserDaoSpringJdbc implements AuthUserDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         KeyHolder kh = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO \"user\" (username, \"password\", enabled, account_non_expired, account_non_locked, credentials_non_expired) " + "VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = con.prepareStatement(
+                    "INSERT INTO \"user\" (username, \"password\", enabled, account_non_expired, account_non_locked, credentials_non_expired) "
+                            + "VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, authUserEntity.getUsername());
             preparedStatement.setObject(2, pe.encode(authUserEntity.getPassword()));
             preparedStatement.setBoolean(3, authUserEntity.getEnabled());
@@ -49,8 +52,16 @@ public class AuthUserDaoSpringJdbc implements AuthUserDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         return Optional.ofNullable
                 (jdbcTemplate.queryForObject(
-                "SELECT * FROM \"user\" WHERE id = ?",
-                AuthUserEntityRowMapper.instance, id));
+                        "SELECT * FROM \"user\" WHERE id = ?",
+                        AuthUserEntityRowMapper.instance, id));
+    }
+
+    @Override
+    public List<AuthUserEntity> findAll() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        return jdbcTemplate.query(
+                "SELECT * FROM \"user\" ",
+                AuthUserEntityRowMapper.instance);
     }
 
     @Override

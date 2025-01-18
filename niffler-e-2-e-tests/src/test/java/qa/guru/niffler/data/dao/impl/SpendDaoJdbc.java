@@ -3,6 +3,7 @@ package qa.guru.niffler.data.dao.impl;
 import qa.guru.niffler.data.dao.SpendDao;
 import qa.guru.niffler.data.entity.spend.CategoryEntity;
 import qa.guru.niffler.data.entity.spend.SpendEntity;
+
 import qa.guru.niffler.model.CurrencyValues;
 
 import java.sql.*;
@@ -85,6 +86,36 @@ public class SpendDaoJdbc implements SpendDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT * FROM spend WHERE username = ?")) {
             preparedStatement.setObject(1, username);
+            preparedStatement.execute();
+            try (ResultSet resultSet = preparedStatement.getResultSet()) {
+                while (resultSet.next()) {
+
+                    SpendEntity spendEntity = new SpendEntity();
+                    CategoryEntity categoryEntity = new CategoryEntity();
+
+                    spendEntity.setId(resultSet.getObject("id", UUID.class));
+                    categoryEntity.setId(resultSet.getObject("category_id", UUID.class));
+                    spendEntity.setUsername(resultSet.getString("username"));
+                    spendEntity.setSpendDate(resultSet.getDate("spend_date"));
+                    spendEntity.setCurrency(CurrencyValues.valueOf(resultSet.getString("currency")));
+                    spendEntity.setAmount(resultSet.getDouble("amount"));
+                    spendEntity.setDescription(resultSet.getString("description"));
+                    spendEntity.setCategory(categoryEntity);
+
+                    spendEntities.add(spendEntity);
+                }
+                return spendEntities;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<SpendEntity> findAll() {
+        List<SpendEntity> spendEntities = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT * FROM spend WHERE")) {
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.getResultSet()) {
                 while (resultSet.next()) {
