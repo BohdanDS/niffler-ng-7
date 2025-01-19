@@ -1,5 +1,6 @@
 package qa.guru.niffler.data.dao.impl;
 
+import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.dao.CategoryDao;
 import qa.guru.niffler.data.entity.spend.CategoryEntity;
 
@@ -9,17 +10,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static qa.guru.niffler.data.tpl.Connections.holder;
+
 public class CategoryDaoJdbc implements CategoryDao {
 
-    private final Connection connection;
-
-    public CategoryDaoJdbc(Connection connection) {
-        this.connection = connection;
-    }
+    private static final Config CFG = Config.getInstance();
 
     @Override
     public CategoryEntity createCategory(CategoryEntity categoryEntity) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
+        try (PreparedStatement preparedStatement = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
                 "INSERT INTO category (username, name, archived)"
                         + "VALUES (?, ?, ?)",
                 Statement.RETURN_GENERATED_KEYS
@@ -47,7 +46,7 @@ public class CategoryDaoJdbc implements CategoryDao {
 
     @Override
     public Optional<CategoryEntity> findCategoryById(UUID id) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
+        try (PreparedStatement preparedStatement = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM category WHERE id = ?")) {
             preparedStatement.setObject(1, id);
             preparedStatement.execute();
@@ -70,7 +69,7 @@ public class CategoryDaoJdbc implements CategoryDao {
 
     @Override
     public Optional<CategoryEntity> findCategoryByUsernameAndCategoryName(String username, String categoryName) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
+        try (PreparedStatement preparedStatement = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM category WHERE username = ? AND name = ?"
         )) {
             preparedStatement.setObject(1, username);
@@ -101,7 +100,7 @@ public class CategoryDaoJdbc implements CategoryDao {
 
         List<CategoryEntity> categoryEntities = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
+        try (PreparedStatement preparedStatement = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM category WHERE username = ?")) {
             preparedStatement.setObject(1, username);
             preparedStatement.execute();
@@ -128,7 +127,7 @@ public class CategoryDaoJdbc implements CategoryDao {
     public List<CategoryEntity> findAll() {
         List<CategoryEntity> categoryEntities = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
+        try (PreparedStatement preparedStatement = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM category")) {
             preparedStatement.execute();
             try (ResultSet resultSet = preparedStatement.getResultSet()) {
@@ -152,7 +151,7 @@ public class CategoryDaoJdbc implements CategoryDao {
 
     @Override
     public void deleteCategory(CategoryEntity categoryEntity) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(
+        try (PreparedStatement preparedStatement = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
                 "DELETE FROM category WHERE id = ?")) {
             preparedStatement.setObject(1, categoryEntity.getId());
             preparedStatement.execute();
