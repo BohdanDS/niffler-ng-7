@@ -2,15 +2,17 @@ package qa.guru.niffler.data.dao.impl;
 
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.Databases;
-import qa.guru.niffler.data.dao.UserDataUserDao;
+import qa.guru.niffler.data.dao.UdUserDao;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 import qa.guru.niffler.model.CurrencyValues;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UserDaoJdbc implements UserDataUserDao {
+public class UdUserDaoJdbc implements UdUserDao {
 
     private static final Config CFG = Config.getInstance();
 
@@ -103,6 +105,39 @@ public class UserDaoJdbc implements UserDataUserDao {
                     } else {
                         return Optional.empty();
                     }
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<UserEntity> findAll() {
+
+        List<UserEntity> userEntities = new ArrayList<>();
+
+        try (Connection connection = Databases.connection(CFG.userDataJdbcUrl())) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM user")) {
+                preparedStatement.execute();
+                try (ResultSet resultSet = preparedStatement.getResultSet()) {
+                    while (resultSet.next()) {
+                        UserEntity userEntity = new UserEntity();
+
+                        userEntity.setId(resultSet.getObject("id", UUID.class));
+                        userEntity.setUsername(resultSet.getString("username"));
+                        userEntity.setCurrency(CurrencyValues.valueOf(resultSet.getString("currency")));
+                        userEntity.setFirstname(resultSet.getString("firstname"));
+                        userEntity.setSurname(resultSet.getString("surname"));
+                        userEntity.setPhoto(resultSet.getBytes("photo"));
+                        userEntity.setPhotoSmall(resultSet.getBytes("photo_small"));
+                        userEntity.setFullname(resultSet.getString("full_name"));
+
+                        userEntities.add(userEntity);
+                    }
+                    return userEntities;
                 }
             }
 
