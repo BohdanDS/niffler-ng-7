@@ -3,7 +3,7 @@ package qa.guru.niffler.data.mapper;
 import org.springframework.jdbc.core.RowMapper;
 import qa.guru.niffler.data.entity.spend.CategoryEntity;
 import qa.guru.niffler.data.entity.spend.SpendEntity;
-import qa.guru.niffler.model.CurrencyValues;
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

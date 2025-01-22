@@ -2,8 +2,9 @@ package qa.guru.niffler.data.dao.impl;
 
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.dao.UdUserDao;
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
-import qa.guru.niffler.model.CurrencyValues;
+
 
 import java.sql.*;
 import java.util.ArrayList;

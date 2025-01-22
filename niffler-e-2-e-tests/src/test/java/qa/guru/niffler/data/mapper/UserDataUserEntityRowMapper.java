@@ -1,8 +1,9 @@
 package qa.guru.niffler.data.mapper;
 
 import org.springframework.jdbc.core.RowMapper;
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
-import qa.guru.niffler.model.CurrencyValues;
+
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

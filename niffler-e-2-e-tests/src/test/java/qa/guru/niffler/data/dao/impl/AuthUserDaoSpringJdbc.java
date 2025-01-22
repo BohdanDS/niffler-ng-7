@@ -3,15 +3,12 @@ package qa.guru.niffler.data.dao.impl;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.dao.AuthUserDao;
 import qa.guru.niffler.data.entity.auth.AuthUserEntity;
 import qa.guru.niffler.data.mapper.AuthUserEntityRowMapper;
 import qa.guru.niffler.data.tpl.DataSources;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 import java.util.Optional;

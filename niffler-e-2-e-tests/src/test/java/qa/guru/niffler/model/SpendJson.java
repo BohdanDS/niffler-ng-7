@@ -3,6 +3,7 @@ package qa.guru.niffler.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import qa.guru.niffler.data.entity.spend.CategoryEntity;
 import qa.guru.niffler.data.entity.spend.SpendEntity;
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 
 
 import java.util.Date;

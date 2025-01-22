@@ -1,13 +1,14 @@
-package guru.qa.niffler.model;
+package qa.guru.niffler.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import qa.guru.niffler.data.entity.userdata.UserEntity;
-import qa.guru.niffler.model.CurrencyValues;
+
 import qa.guru.niffler.model.FriendState;
 
 import java.nio.charset.StandardCharsets;
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -32,7 +33,6 @@ public record UserJson(
         FriendState friendState) {
 
     public static UserJson fromEntity(UserEntity entity, FriendState friendState) {
-        System.out.println(entity);
 
         return new UserJson(
                 entity.getId(),

@@ -1,7 +1,7 @@
 package qa.guru.niffler.api;
 
 import qa.guru.niffler.model.CategoryJson;
-import qa.guru.niffler.model.CurrencyValues;
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.model.SpendJson;
 import retrofit2.Response;
 import retrofit2.Retrofit;

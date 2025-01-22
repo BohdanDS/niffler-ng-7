@@ -5,7 +5,7 @@ import qa.guru.niffler.data.dao.SpendDao;
 import qa.guru.niffler.data.entity.spend.CategoryEntity;
 import qa.guru.niffler.data.entity.spend.SpendEntity;
 
-import qa.guru.niffler.model.CurrencyValues;
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 
 import java.sql.*;
 import java.util.*;
@@ -24,7 +24,7 @@ public class SpendDaoJdbc implements SpendDao {
                 Statement.RETURN_GENERATED_KEYS
         )) {
             preparedStatement.setString(1, spendEntity.getUsername());
-            preparedStatement.setObject(2, spendEntity.getSpendDate());
+            preparedStatement.setDate(2, new java.sql.Date(spendEntity.getSpendDate().getTime()));
             preparedStatement.setString(3, spendEntity.getCurrency().name());
             preparedStatement.setDouble(4, spendEntity.getAmount());
             preparedStatement.setString(5, spendEntity.getDescription());

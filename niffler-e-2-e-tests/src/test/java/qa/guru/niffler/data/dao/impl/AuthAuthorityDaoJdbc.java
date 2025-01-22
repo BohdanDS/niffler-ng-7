@@ -2,9 +2,8 @@ package qa.guru.niffler.data.dao.impl;
 
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.dao.AuthAuthorityDao;
-import qa.guru.niffler.data.entity.auth.AuthAuthorityEntity;
-import qa.guru.niffler.data.entity.auth.AuthUserEntity;
 import qa.guru.niffler.data.entity.auth.Authority;
+import qa.guru.niffler.data.entity.auth.AuthorityEntity;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,14 +17,14 @@ public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
     private static final Config CFG = Config.getInstance();
 
     @Override
-    public void createAuthority(AuthAuthorityEntity... authAuthorityEntities) {
+    public void createAuthority(AuthorityEntity... authAuthorityEntities) {
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "INSERT INTO \"authority\" (user_id, authority)" +
                         "VALUES(?, ?)"
         )) {
 
-            for (AuthAuthorityEntity authorityEntity : authAuthorityEntities){
-                preparedStatement.setObject(1, authorityEntity.getUserId());
+            for (AuthorityEntity authorityEntity : authAuthorityEntities) {
+                preparedStatement.setObject(1, authorityEntity.getUser().getId());
                 preparedStatement.setString(2, authorityEntity.getAuthority().name());
                 preparedStatement.addBatch();
                 preparedStatement.clearParameters();
@@ -39,8 +38,8 @@ public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
     }
 
     @Override
-    public List<AuthAuthorityEntity> getAuthorityByUserId(UUID id) {
-        List<AuthAuthorityEntity> authAuthorityEntities = new ArrayList<>();
+    public List<AuthorityEntity> getAuthorityByUserId(UUID id) {
+        List<AuthorityEntity> authAuthorityEntities = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM \"authority\" where user_id = ?"
@@ -50,11 +49,11 @@ public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
 
             try (ResultSet resultSet = preparedStatement.getResultSet()) {
                 while (resultSet.next()) {
-                    AuthAuthorityEntity authAuthorityEntity = new AuthAuthorityEntity();
+                    AuthorityEntity authAuthorityEntity = new AuthorityEntity();
 
                     authAuthorityEntity.setId(resultSet.getObject("id", UUID.class));
                     authAuthorityEntity.setAuthority(Authority.valueOf(resultSet.getString("authority")));
-                    authAuthorityEntity.setUserId(resultSet.getObject("user_id", UUID.class));
+                    authAuthorityEntity.getUser().setId(resultSet.getObject("user_id", UUID.class));
                     authAuthorityEntities.add(authAuthorityEntity);
                 }
             }
