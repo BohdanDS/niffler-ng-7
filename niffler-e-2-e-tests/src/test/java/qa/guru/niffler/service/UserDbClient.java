@@ -2,7 +2,9 @@ package qa.guru.niffler.service;
 
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 import qa.guru.niffler.data.repository.AuthUserRepository;
+import qa.guru.niffler.data.repository.UdUserRepository;
 import qa.guru.niffler.data.repository.impl.AuthUserRepositoryJdbc;
+import qa.guru.niffler.data.repository.impl.UdUserRepositoryJdbc;
 import qa.guru.niffler.model.UserJson;
 import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -18,6 +20,8 @@ import qa.guru.niffler.data.tpl.DataSources;
 import qa.guru.niffler.data.tpl.XaTransactionTemplate;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
 
 
 public class UserDbClient {
@@ -28,6 +32,8 @@ public class UserDbClient {
 
     private final AuthUserRepository authUserRepository = new AuthUserRepositoryJdbc();
     private final UdUserDao udUserDao = new UdUserDaoSpringJdbc();
+
+    private final UdUserRepository udUserRepository = new UdUserRepositoryJdbc();
 
     private final TransactionTemplate txTemplate = new TransactionTemplate(
             new JdbcTransactionManager(
@@ -66,6 +72,10 @@ public class UserDbClient {
                     return UserJson.fromEntity(udUserDao.createUser(UserEntity.fromJson(user)), null);
                 }
         );
+    }
+
+    public Optional<UserEntity> findUserByID(UUID id) {
+        return udUserRepository.findById(id);
     }
 }
 
