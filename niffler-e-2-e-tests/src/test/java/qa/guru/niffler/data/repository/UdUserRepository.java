@@ -1,6 +1,5 @@
 package qa.guru.niffler.data.repository;
 
-import qa.guru.niffler.data.entity.userdata.FriendshipStatus;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 
 import java.util.Optional;
@@ -12,6 +11,12 @@ public interface UdUserRepository {
 
     Optional<UserEntity> findById (UUID userId);
 
-    void addFriendshipRecord(UserEntity requester, UserEntity addressee, FriendshipStatus friendshipStatus);
+    Optional<UserEntity> findByUsername(String username);
+
+    void addIncomeInvitation(UserEntity requester, UserEntity addressee);
+    void addOutcomeInvitation(UserEntity requester, UserEntity addressee);
+    void addFriendship(UserEntity requester, UserEntity addressee);
+
+//    void addFriendshipRecord(UserEntity requester, UserEntity addressee, FriendshipStatus friendshipStatus);
 
 }

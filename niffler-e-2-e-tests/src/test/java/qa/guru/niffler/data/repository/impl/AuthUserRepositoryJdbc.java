@@ -75,6 +75,11 @@ public class AuthUserRepositoryJdbc implements AuthUserRepository {
     }
 
     @Override
+    public AuthUserEntity updateUser(AuthUserEntity authUserEntity) {
+        return null;
+    }
+
+    @Override
     public Optional<AuthUserEntity> findUserById(UUID id) {
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM \"user\" u join authority a on u.id = a.user_id WHERE u.id = ?"
@@ -119,5 +124,15 @@ public class AuthUserRepositoryJdbc implements AuthUserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Optional<AuthUserEntity> findUserByUsername(String username) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void removeUser(AuthUserEntity authUserEntity) {
+
     }
 }

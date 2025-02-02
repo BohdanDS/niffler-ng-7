@@ -113,7 +113,27 @@ public class UdUserRepositoryJdbc implements UdUserRepository {
     }
 
     @Override
-    public void addFriendshipRecord(UserEntity requester, UserEntity addressee, FriendshipStatus friendshipStatus) {
+    public Optional<UserEntity> findByUsername(String username) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void addIncomeInvitation(UserEntity requester, UserEntity addressee) {
 
     }
+
+    @Override
+    public void addOutcomeInvitation(UserEntity requester, UserEntity addressee) {
+
+    }
+
+    @Override
+    public void addFriendship(UserEntity requester, UserEntity addressee) {
+
+    }
+
+//    @Override
+//    public void addFriendshipRecord(UserEntity requester, UserEntity addressee, FriendshipStatus friendshipStatus) {
+//
+//    }
 }
