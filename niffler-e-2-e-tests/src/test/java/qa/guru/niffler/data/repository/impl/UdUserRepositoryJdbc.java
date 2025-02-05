@@ -55,6 +55,11 @@ public class UdUserRepositoryJdbc implements UdUserRepository {
     }
 
     @Override
+    public UserEntity updateUser(UserEntity userEntity) {
+        return null;
+    }
+
+    @Override
     public Optional<UserEntity> findById(UUID userId) {
         try (PreparedStatement preparedStatement = holder(CFG.userDataJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM \"user\" u LEFT JOIN friendship f ON (u.id = f.addressee_id OR u.id = f.requester_id)\n" +
@@ -129,6 +134,11 @@ public class UdUserRepositoryJdbc implements UdUserRepository {
 
     @Override
     public void addFriendship(UserEntity requester, UserEntity addressee) {
+
+    }
+
+    @Override
+    public void removeUser(UserEntity userEntity) {
 
     }
 

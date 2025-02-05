@@ -9,10 +9,8 @@ import qa.guru.niffler.data.entity.spend.CategoryEntity;
 import qa.guru.niffler.data.mapper.CategoryEntityRowMapper;
 import qa.guru.niffler.data.tpl.DataSources;
 
-
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -78,6 +76,27 @@ public class CategoryDaoSpringJdbc implements CategoryDao {
                 "SELECT * FROM category",
                 CategoryEntityRowMapper.instance
         );
+    }
+
+    @Override
+    public CategoryEntity updateCategory(CategoryEntity categoryEntity) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(DataSources.dataSource(CFG.spendJdbcUrl()));
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE category SET " +
+                            "name = ?, " +
+                            "username = ?, " +
+                            "archived = ? " +
+                            "WHERE id = ?"
+            );
+            ps.setString(1, categoryEntity.getName());
+            ps.setString(2, categoryEntity.getUsername());
+            ps.setBoolean(3, categoryEntity.isArchived());
+            ps.setObject(4, categoryEntity.getId());
+
+            return ps;
+        });
+        return categoryEntity;
     }
 
     @Override

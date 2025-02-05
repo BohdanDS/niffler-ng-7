@@ -5,8 +5,10 @@ import qa.guru.niffler.data.dao.UdUserDao;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 
-
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -136,6 +138,11 @@ public class UdUserDaoJdbc implements UdUserDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public UserEntity updateUser(UserEntity user) {
+        return null;
     }
 
     @Override

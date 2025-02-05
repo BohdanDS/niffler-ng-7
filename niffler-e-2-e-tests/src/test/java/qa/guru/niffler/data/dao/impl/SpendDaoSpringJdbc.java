@@ -9,8 +9,8 @@ import qa.guru.niffler.data.entity.spend.SpendEntity;
 import qa.guru.niffler.data.mapper.SpendEntityRowMapper;
 import qa.guru.niffler.data.tpl.DataSources;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,7 +43,7 @@ public class SpendDaoSpringJdbc implements SpendDao {
     }
 
     @Override
-    public Optional<SpendEntity> findEntityById(UUID id) {
+    public Optional<SpendEntity> findSpendById(UUID id) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(DataSources.dataSource(CFG.spendJdbcUrl()));
         return Optional.ofNullable
                 (jdbcTemplate.queryForObject(
@@ -60,11 +60,50 @@ public class SpendDaoSpringJdbc implements SpendDao {
     }
 
     @Override
+    public SpendEntity updateSpend(SpendEntity spendEntity) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(DataSources.dataSource(CFG.spendJdbcUrl()));
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE spend SET " +
+                            "username = ?, " +
+                            "spend_date = ?, " +
+                            "currency = ?, " +
+                            "amount = ?, " +
+                            "description = ?, " +
+                            "category_id = ?"
+            );
+            ps.setString(1, spendEntity.getUsername());
+            ps.setDate(2, new java.sql.Date(spendEntity.getSpendDate().getTime()));
+            ps.setString(3, spendEntity.getCurrency().name());
+            ps.setDouble(4, spendEntity.getAmount());
+            ps.setString(5, spendEntity.getDescription());
+            ps.setObject(6, spendEntity.getCategory().getId());
+
+            return ps;
+        });
+
+        return spendEntity;
+    }
+
+    @Override
     public List<SpendEntity> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(DataSources.dataSource(CFG.spendJdbcUrl()));
         return jdbcTemplate.query(
                 "SELECT * FROM spend ",
                 SpendEntityRowMapper.instance);
+    }
+
+    @Override
+    public Optional<SpendEntity> findByUsernameAndSpendDescription(String username, String description) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(DataSources.dataSource(CFG.spendJdbcUrl()));
+        return Optional.ofNullable(
+                jdbcTemplate.queryForObject(
+                        "SELECT * FROM spend WHERE username = ? AND description = ?",
+                        SpendEntityRowMapper.instance,
+                        username,
+                        description
+                )
+        );
     }
 
     @Override

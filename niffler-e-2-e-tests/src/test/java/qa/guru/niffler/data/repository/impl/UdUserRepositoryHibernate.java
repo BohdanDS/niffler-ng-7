@@ -25,6 +25,13 @@ public class UdUserRepositoryHibernate implements UdUserRepository {
     }
 
     @Override
+    public UserEntity updateUser(UserEntity userEntity) {
+        entityManager.joinTransaction();
+        entityManager.merge(userEntity);
+        return userEntity;
+    }
+
+    @Override
     public Optional<UserEntity> findById(UUID id) {
         return Optional.ofNullable(entityManager.find(UserEntity.class, id));
     }
@@ -57,5 +64,11 @@ public class UdUserRepositoryHibernate implements UdUserRepository {
         entityManager.joinTransaction();
         requester.addFriends(FriendshipStatus.ACCEPTED, addressee);
         addressee.addFriends(FriendshipStatus.ACCEPTED, requester);
+    }
+
+    @Override
+    public void removeUser(UserEntity userEntity) {
+        entityManager.joinTransaction();
+        entityManager.remove(userEntity);
     }
 }
