@@ -1,6 +1,7 @@
 package qa.guru.niffler.jupiter.annotation;
 
 import org.junit.jupiter.api.extension.ExtendWith;
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.jupiter.extention.SpendingExtension;
 
 import java.lang.annotation.ElementType;
@@ -17,5 +18,7 @@ public @interface Spending {
     String category();
 
     String description();
+
+    CurrencyValues currency() default CurrencyValues.EUR;
 
 }

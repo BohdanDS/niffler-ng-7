@@ -3,7 +3,6 @@ package qa.guru.niffler.page;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 
-import java.io.File;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -17,11 +16,13 @@ public class ProfilePage {
             saveChangesBtn = $("button[id=':r9:']"),
             categoryInput = $("#category"),
             showArchivedCheckbox = $("input[type='checkbox']");
+    private final ElementsCollection bubbles = $$(".MuiChip-filled.MuiChip-colorPrimary");
+    private final ElementsCollection bubblesArchived = $$(".MuiChip-filled.MuiChip-colorDefault");
 
     private final ElementsCollection categoryList = $$(".css-17u3xlq");
 
 
-    public ProfilePage uploadImage(String path){
+    public ProfilePage uploadImage(String path) {
         uploadNewImageBtn.uploadFromClasspath(path);
         return this;
     }
@@ -36,14 +37,21 @@ public class ProfilePage {
         return this;
     }
 
+    public ProfilePage checkArchivedCategoryExists(String category) {
+        showArchivedCheckbox.click();
+        bubblesArchived.find(text(category)).shouldBe(visible);
+        return this;
+    }
+
     public ProfilePage clickArchivedCheckbox() {
         showArchivedCheckbox.click();
         return this;
     }
 
-    public void checkCategoryInCategoryList(String categoryName){
+    public void checkCategoryInCategoryList(String categoryName) {
         categoryList.findBy(text(categoryName)).shouldBe(visible);
     }
+
     public void saveChanges() {
         saveChangesBtn.click();
     }
