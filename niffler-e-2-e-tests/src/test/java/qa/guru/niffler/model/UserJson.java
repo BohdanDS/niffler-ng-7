@@ -1,14 +1,12 @@
 package qa.guru.niffler.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 
-import qa.guru.niffler.model.FriendState;
-
 import java.nio.charset.StandardCharsets;
-import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import java.util.UUID;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,7 +28,9 @@ public record UserJson(
         @JsonProperty("photoSmall")
         String photoSmall,
         @JsonProperty("friendState")
-        FriendState friendState) {
+        FriendState friendState,
+        @JsonIgnore
+        TestData testData) {
 
     public static UserJson fromEntity(UserEntity entity, FriendState friendState) {
 
@@ -43,7 +43,12 @@ public record UserJson(
                 entity.getCurrency(),
                 entity.getPhoto() != null && entity.getPhoto().length > 0 ? new String(entity.getPhoto(), StandardCharsets.UTF_8) : null,
                 entity.getPhotoSmall() != null && entity.getPhotoSmall().length > 0 ? new String(entity.getPhotoSmall(), StandardCharsets.UTF_8) : null,
-                friendState
+                friendState,
+                null
         );
+    }
+
+    public UserJson addTestData(TestData testData) {
+        return new UserJson(id, username, firstname, surname, fullname, currency, photo, photoSmall, friendState, testData);
     }
 }

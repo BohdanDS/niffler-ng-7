@@ -14,7 +14,7 @@ public class SpendingWebTest {
 
     @User(
             userName = "bohdan",
-            categories = @Category(archived = true),
+            categories = @Category(name = "", archived = true),
             spendings = @Spending(amount = 1003, category = "test-category", description = "des")
     )
     @Test

@@ -3,35 +3,46 @@ package qa.guru.niffler.test.web;
 
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
-import qa.guru.niffler.jupiter.extention.UsersQueueExtension.UserType;
-import qa.guru.niffler.jupiter.extention.UsersQueueExtension.StaticUser;
+import qa.guru.niffler.config.Config;
+import qa.guru.niffler.jupiter.extention.meta.User;
 import qa.guru.niffler.jupiter.extention.meta.WebTest;
+import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
-import qa.guru.niffler.page.MainPage;
 
 @WebTest
 public class LoginWebTest {
 
-    private static final String USER_NAME = "Bohdan";
-    private static final String PASSWORD = "123";
-//    private static final String INVALID_PASSWORD = "000";
+//    private static final String USER_NAME = "Bohdan";
 
-    MainPage mainPage = new MainPage();
+    private static final Config CFG = Config.getInstance();
 
-    LoginPage loginPage = new LoginPage();
-
+    @User
     @Test
-    public void successLogin() {
-        Selenide.open("http://127.0.0.1:9000/login");
-        loginPage.login(USER_NAME, PASSWORD);
-        mainPage.checkSuccessLogin();
+    void mainPageLoginTest(UserJson user) {
+        System.out.println(user);
+        Selenide.open(CFG.frontUrl(), LoginPage.class)
+                .login(user.username(), user.testData().password())
+                .checkSuccessLogin();
     }
-
-    @Test
-    public void loginWithBadCredentials(@UserType(UserType.Type.EMPTY) StaticUser user) {
-        Selenide.open("http://127.0.0.1:9000/login");
-        loginPage.login(user.username(), user.password());
-        loginPage.validationMessageIsDisplayed();
-    }
+//    private static final String PASSWORD = "123";
+////    private static final String INVALID_PASSWORD = "000";
+//
+//    MainPage mainPage = new MainPage();
+//
+//    LoginPage loginPage = new LoginPage();
+//
+//    @Test
+//    public void successLogin() {
+//        Selenide.open("http://127.0.0.1:9000/login");
+//        loginPage.login(USER_NAME, PASSWORD);
+//        mainPage.checkSuccessLogin();
+//    }
+//
+//    @Test
+//    public void loginWithBadCredentials(@UserType(UserType.Type.EMPTY) StaticUser user) {
+//        Selenide.open("http://127.0.0.1:9000/login");
+//        loginPage.login(user.username(), user.password());
+//        loginPage.validationMessageIsDisplayed();
+//    }
 
 }
