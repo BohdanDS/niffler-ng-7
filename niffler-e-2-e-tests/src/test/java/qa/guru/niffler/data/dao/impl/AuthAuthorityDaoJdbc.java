@@ -5,7 +5,9 @@ import qa.guru.niffler.data.dao.AuthAuthorityDao;
 import qa.guru.niffler.data.entity.auth.Authority;
 import qa.guru.niffler.data.entity.auth.AuthorityEntity;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +19,7 @@ public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
     private static final Config CFG = Config.getInstance();
 
     @Override
-    public void createAuthority(AuthorityEntity... authAuthorityEntities) {
+    public void create(AuthorityEntity... authAuthorityEntities) {
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "INSERT INTO \"authority\" (user_id, authority)" +
                         "VALUES(?, ?)"
@@ -30,6 +32,25 @@ public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
                 preparedStatement.clearParameters();
             }
 
+            preparedStatement.executeBatch();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void update(AuthorityEntity... authAuthorityEntities) {
+        try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
+                "UPDATE \"authority\" SET user_id = ?, authority = ? WHERE id = ?"
+        )){
+            for (AuthorityEntity a : authAuthorityEntities) {
+                preparedStatement.setObject(1, a.getUser().getId());
+                preparedStatement.setString(2, a.getAuthority().name());
+                preparedStatement.setObject(3, a.getId());
+                preparedStatement.addBatch();
+                preparedStatement.clearParameters();
+            }
             preparedStatement.executeBatch();
 
         } catch (SQLException e) {
@@ -66,12 +87,14 @@ public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
     }
 
     @Override
-    public void deleteUserAuthority(UUID id) throws SQLException {
+    public void deleteUserAuthority(UUID id) {
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "DELETE FROM \"authority\" WHERE id = ?"
         )) {
             preparedStatement.setObject(1, id);
             preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

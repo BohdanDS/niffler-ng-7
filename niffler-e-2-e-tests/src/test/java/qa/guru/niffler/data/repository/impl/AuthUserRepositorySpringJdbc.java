@@ -2,8 +2,8 @@ package qa.guru.niffler.data.repository.impl;
 
 import qa.guru.niffler.data.dao.AuthAuthorityDao;
 import qa.guru.niffler.data.dao.AuthUserDao;
-import qa.guru.niffler.data.dao.impl.AuthAuthorityDaoJdbc;
-import qa.guru.niffler.data.dao.impl.AuthUserDaoJdbc;
+import qa.guru.niffler.data.dao.impl.AuthAuthorityDaoSpringJdbc;
+import qa.guru.niffler.data.dao.impl.AuthUserDaoSpringJdbc;
 import qa.guru.niffler.data.entity.auth.AuthUserEntity;
 import qa.guru.niffler.data.entity.auth.AuthorityEntity;
 import qa.guru.niffler.data.repository.AuthUserRepository;
@@ -11,10 +11,10 @@ import qa.guru.niffler.data.repository.AuthUserRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public class AuthUserRepositoryJdbc implements AuthUserRepository {
+public class AuthUserRepositorySpringJdbc implements AuthUserRepository {
 
-    private final AuthUserDao authUserDao = new AuthUserDaoJdbc();
-    private final AuthAuthorityDao authAuthorityDao = new AuthAuthorityDaoJdbc();
+    private final AuthUserDao authUserDao = new AuthUserDaoSpringJdbc();
+    private final AuthAuthorityDao authAuthorityDao = new AuthAuthorityDaoSpringJdbc();
 
     @Override
     public AuthUserEntity createUser(AuthUserEntity authUserEntity) {

@@ -1,9 +1,7 @@
 package qa.guru.niffler.service;
 
-import org.springframework.jdbc.support.JdbcTransactionManager;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.support.TransactionTemplate;
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.entity.auth.AuthUserEntity;
 import qa.guru.niffler.data.entity.auth.Authority;
@@ -14,73 +12,99 @@ import qa.guru.niffler.data.repository.AuthUserRepository;
 import qa.guru.niffler.data.repository.UdUserRepository;
 import qa.guru.niffler.data.repository.impl.AuthUserRepositoryHibernate;
 import qa.guru.niffler.data.repository.impl.UdUserRepositoryHibernate;
-import qa.guru.niffler.data.tpl.DataSources;
 import qa.guru.niffler.data.tpl.XaTransactionTemplate;
 import qa.guru.niffler.model.UserJson;
 
 import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
 
 import static qa.guru.niffler.utils.RandomDataUtils.randomUserName;
 
 
-public class UserDbClient {
-
-
+public class UserDbClient implements UserClient{
     private static final Config CFG = Config.getInstance();
     private static final PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     private final AuthUserRepository authUserRepository = new AuthUserRepositoryHibernate();
     private final UdUserRepository udUserRepository = new UdUserRepositoryHibernate();
 
-    private final TransactionTemplate txTemplate = new TransactionTemplate(
-            new JdbcTransactionManager(
-                    DataSources.dataSource(CFG.authJdbcUrl())
-            )
-    );
-
-    private final XaTransactionTemplate xaTransactionTemplate = new XaTransactionTemplate(
+    private final XaTransactionTemplate xaTxTemplate = new XaTransactionTemplate(
             CFG.authJdbcUrl(),
             CFG.userDataJdbcUrl()
     );
 
+    @Override
     public UserJson createUser(String username, String password) {
-        return xaTransactionTemplate.execute(() -> {
-                    AuthUserEntity authUser = authUserEntity(username, password);
+        return xaTxTemplate.execute(() -> {
+            AuthUserEntity authUser = authUserEntity(username, password);
 
-                    authUserRepository.createUser(authUser);
+            authUserRepository.createUser(authUser);
 
-                    return UserJson.fromEntity(udUserRepository.createUser(userEntity(username)), null);
-                }
-        );
+            return UserJson.fromEntity(
+                    udUserRepository.createUser(userEntity(username)), null);
+        });
     }
 
-    public void addIncomeInvitation(UserJson targetUser, int count) {
+    @Override
+    public void createIncomeInvitations(UserJson targetUser, int count) {
         if (count > 0) {
             UserEntity targetEntity = udUserRepository.findById(targetUser.id()).orElseThrow();
 
             for (int i = 0; i < count; i++) {
-                xaTransactionTemplate.execute(() -> {
-                            String username = randomUserName();
-                            AuthUserEntity authUser = authUserEntity(username, "123");
-                            authUserRepository.createUser(authUser);
+                xaTxTemplate.execute(() -> {
+                    String username = randomUserName();
+                    String password = "123";
 
-                            UserEntity addressee = udUserRepository.createUser(userEntity(username));
-                            udUserRepository.addIncomeInvitation(targetEntity, addressee);
-                            return null;
-                        }
-                );
+                    AuthUserEntity authUser = authUserEntity(username, password);
+                    authUserRepository.createUser(authUser);
+                    UserEntity addressee = udUserRepository.createUser(userEntity(username));
+
+                    udUserRepository.addIncomeInvitation(targetEntity, addressee);
+                    return null;
+                });
             }
         }
     }
 
-    void addOutcomeInvitation(UserJson targetUser, int count) {
+    @Override
+    public void createOutcomeInvitations(UserJson targetUser, int count) {
+        if (count > 0) {
+            UserEntity targetEntity = udUserRepository.findById(targetUser.id()).orElseThrow();
 
+            for (int i = 0; i < count; i++) {
+                xaTxTemplate.execute(() -> {
+                    String username = randomUserName();
+                    String password = "123";
+
+                    AuthUserEntity authUser = authUserEntity(username, password);
+                    authUserRepository.createUser(authUser);
+                    UserEntity addressee = udUserRepository.createUser(userEntity(username));
+
+                    udUserRepository.addOutcomeInvitation(addressee, targetEntity);
+                    return null;
+                });
+            }
+        }
     }
 
-    void addFriendship(UserJson targetUser, int count) {
+    @Override
+    public void createFriends(UserJson targetUser, int count) {
+        if (count > 0) {
+            UserEntity targetEntity = udUserRepository.findById(targetUser.id()).orElseThrow();
 
+            for (int i = 0; i < count; i++) {
+                xaTxTemplate.execute(() -> {
+                    String username = randomUserName();
+                    String password = "12345";
+
+                    AuthUserEntity authUser = authUserEntity(username, password);
+                    authUserRepository.createUser(authUser);
+                    UserEntity addressee = udUserRepository.createUser(userEntity(username));
+
+                    udUserRepository.addFriendship(targetEntity, addressee);
+                    return null;
+                });
+            }
+        }
     }
 
     private UserEntity userEntity(String username) {
@@ -99,21 +123,14 @@ public class UserDbClient {
         authUser.setAccountNonLocked(true);
         authUser.setCredentialsNonExpired(true);
         authUser.setAuthorities(
-                Arrays.stream(Authority.values()).map(
-                        e -> {
-                            AuthorityEntity ae = new AuthorityEntity();
-                            ae.setUser(authUser);
-                            ae.setAuthority(e);
-                            System.out.println(ae);
-                            return ae;
-                        }
-                ).toList()
+                Arrays.stream(Authority.values()).map(e -> {
+                    AuthorityEntity authority = new AuthorityEntity();
+                    authority.setUser(authUser);
+                    authority.setAuthority(e);
+                    return authority;
+                }).toList()
         );
         return authUser;
-    }
-
-    public Optional<UserEntity> findUserByID(UUID id) {
-        return udUserRepository.findById(id);
     }
 }
 

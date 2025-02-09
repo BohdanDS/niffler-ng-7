@@ -4,11 +4,17 @@ import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.dao.SpendDao;
 import qa.guru.niffler.data.entity.spend.CategoryEntity;
 import qa.guru.niffler.data.entity.spend.SpendEntity;
-
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
+import qa.guru.niffler.data.mapper.SpendEntityRowMapper;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static qa.guru.niffler.data.tpl.Connections.holder;
 
@@ -48,7 +54,7 @@ public class SpendDaoJdbc implements SpendDao {
     }
 
     @Override
-    public Optional<SpendEntity> findEntityById(UUID id) {
+    public Optional<SpendEntity> findSpendById(UUID id) {
         try (PreparedStatement preparedStatement = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM spend WHERE id = ?")) {
             preparedStatement.setObject(1, id);
@@ -111,6 +117,32 @@ public class SpendDaoJdbc implements SpendDao {
     }
 
     @Override
+    public SpendEntity updateSpend(SpendEntity spendEntity) {
+        try (PreparedStatement ps = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
+                "UPDATE spend SET " +
+                        "username = ?, " +
+                        "spend_date = ?, " +
+                        "currency = ?, " +
+                        "amount = ?, " +
+                        "description = ?, " +
+                        "category_id = ?"
+        )) {
+            ps.setString(1, spendEntity.getUsername());
+            ps.setDate(2, new java.sql.Date(spendEntity.getSpendDate().getTime()));
+            ps.setString(3, spendEntity.getCurrency().name());
+            ps.setDouble(4, spendEntity.getAmount());
+            ps.setString(5, spendEntity.getDescription());
+            ps.setObject(6, spendEntity.getCategory().getId());
+            ps.executeUpdate();
+
+            return spendEntity;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public List<SpendEntity> findAll() {
         List<SpendEntity> spendEntities = new ArrayList<>();
         try (PreparedStatement preparedStatement = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
@@ -134,6 +166,29 @@ public class SpendDaoJdbc implements SpendDao {
                     spendEntities.add(spendEntity);
                 }
                 return spendEntities;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<SpendEntity> findByUsernameAndSpendDescription(String username, String description) {
+        try (PreparedStatement ps = holder(CFG.spendJdbcUrl()).connection().prepareStatement(
+                "SELECT * FROM spend WHERE username = ? AND description = ?"
+        )) {
+            ps.setString(1, username);
+            ps.setString(2, description);
+            ps.execute();
+
+            try (ResultSet rs = ps.getResultSet()) {
+                if (rs.next()) {
+                    SpendEntity se =
+                            SpendEntityRowMapper.instance.mapRow(rs, rs.getRow());
+                    return Optional.ofNullable(se);
+                } else {
+                    return Optional.empty();
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

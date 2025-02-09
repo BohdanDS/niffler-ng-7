@@ -4,7 +4,10 @@ import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.dao.CategoryDao;
 import qa.guru.niffler.data.entity.spend.CategoryEntity;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -147,6 +150,11 @@ public class CategoryDaoJdbc implements CategoryDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public CategoryEntity updateCategory(CategoryEntity categoryEntity) {
+        return null;
     }
 
     @Override

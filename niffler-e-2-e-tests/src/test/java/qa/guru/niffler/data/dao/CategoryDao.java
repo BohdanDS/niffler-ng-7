@@ -18,5 +18,7 @@ public interface CategoryDao {
 
     List<CategoryEntity> findAll();
 
+    CategoryEntity updateCategory(CategoryEntity categoryEntity);
+
     void deleteCategory(CategoryEntity categoryEntity);
 }
