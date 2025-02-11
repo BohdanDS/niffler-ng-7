@@ -1,5 +1,6 @@
 package qa.guru.niffler.page;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import qa.guru.niffler.config.Config;
 
@@ -18,8 +19,7 @@ public class LoginPage {
             errorMessage = $(".form__error");
 
     public MainPage login(String username, String password){
-        System.out.println("123");
-//        Selenide.open(instance.frontUrl());
+        Selenide.open(instance.frontUrl());
         usernameInput.setValue(username);
         passwordInput.setValue(password);
         submitBtn.click();

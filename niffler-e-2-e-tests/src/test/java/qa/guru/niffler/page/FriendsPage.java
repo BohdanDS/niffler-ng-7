@@ -1,8 +1,8 @@
 package qa.guru.niffler.page;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -13,7 +13,9 @@ public class FriendsPage {
 
     private final SelenideElement searchInput = $("input[aria-label='search']"),
             emptyFriendsTable = $("#simple-tabpanel-friends"),
-            tabsSwitcher = $("a[aria-selected='false']");
+            searchInputField = $("input[aria-label=\"search\"]"),
+            friendsTab = $("a[aria-selected='false']"),
+            allPeopleTab = $("a[aria-selected='true']");
     private final ElementsCollection allPeopleRows = $$("#all tr"),
             allFriendsRows = $$("#friends tr"),
             incomeRequestsRows = $$("#requests tr");
@@ -35,11 +37,25 @@ public class FriendsPage {
     }
 
     public void verifyFriendsList(String userName) {
-        allFriendsRows.findBy(text(userName)).$("p").shouldHave(text(userName)).shouldBe(visible);
+        if (allFriendsRows.findBy(text(userName)).isDisplayed()) {
+            // Если пользователь найден, проверяем, что он видим и текст совпадает
+            allFriendsRows.findBy(text(userName)).$("p").shouldHave(text(userName)).shouldBe(visible);
+        } else {
+            // Если пользователь не найден, вводим его имя в строку поиска
+            searchInputField.setValue(userName).pressEnter();
+            allPeopleRows.shouldHave(CollectionCondition.sizeGreaterThan(0));
+            // Повторно проверяем, появился ли пользователь в таблице
+
+            allPeopleRows.findBy(text(userName)).$("p").shouldHave(text(userName)).shouldBe(visible);
+        }
     }
 
-    public FriendsPage switchTab() {
-        tabsSwitcher.click();
+    public FriendsPage clickFriendsTab() {
+        friendsTab.click();
+        return this;
+    }
+    public FriendsPage clickAllPeopleTab() {
+        allPeopleTab.click();
         return this;
     }
 

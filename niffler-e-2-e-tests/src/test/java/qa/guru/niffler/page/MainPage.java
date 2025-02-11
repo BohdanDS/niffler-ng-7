@@ -3,7 +3,7 @@ package qa.guru.niffler.page;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import lombok.Getter;
-import qa.guru.niffler.page.components.HeaderComponent;
+import qa.guru.niffler.page.components.Header;
 import qa.guru.niffler.page.components.UserProfileMenuComponent;
 
 import static com.codeborne.selenide.Condition.text;
@@ -14,7 +14,7 @@ import static com.codeborne.selenide.Selenide.$;
 public class MainPage {
 
     @Getter
-    private final HeaderComponent headerComponent = new HeaderComponent();
+    private final Header header = new Header();
 
     @Getter
     private final UserProfileMenuComponent userProfileMenuComponent = new UserProfileMenuComponent();

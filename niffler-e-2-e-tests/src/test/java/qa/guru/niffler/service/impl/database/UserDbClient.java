@@ -1,4 +1,4 @@
-package qa.guru.niffler.service;
+package qa.guru.niffler.service.impl.database;
 
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,13 +14,14 @@ import qa.guru.niffler.data.repository.impl.AuthUserRepositoryHibernate;
 import qa.guru.niffler.data.repository.impl.UdUserRepositoryHibernate;
 import qa.guru.niffler.data.tpl.XaTransactionTemplate;
 import qa.guru.niffler.model.UserJson;
+import qa.guru.niffler.service.UserClient;
 
 import java.util.Arrays;
 
 import static qa.guru.niffler.utils.RandomDataUtils.randomUserName;
 
 
-public class UserDbClient implements UserClient{
+public class UserDbClient implements UserClient {
     private static final Config CFG = Config.getInstance();
     private static final PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
