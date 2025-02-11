@@ -1,8 +1,6 @@
 package qa.guru.niffler.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import lombok.NonNull;
-import lombok.SneakyThrows;
 import qa.guru.niffler.config.Config;
 import retrofit2.Response;
 import retrofit2.Retrofit;

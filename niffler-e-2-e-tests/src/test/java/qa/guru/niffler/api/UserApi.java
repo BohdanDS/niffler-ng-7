@@ -1,10 +1,8 @@
 package qa.guru.niffler.api;
 
 import okhttp3.ResponseBody;
-import qa.guru.niffler.model.RegistrationJson;
 import qa.guru.niffler.model.UserJson;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.*;
 
 import java.util.List;

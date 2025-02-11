@@ -1,11 +1,9 @@
 package qa.guru.niffler.service.impl.api;
 
-import qa.guru.niffler.api.UserApi;
 import qa.guru.niffler.api.UserApiClient;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.model.TestData;
 import qa.guru.niffler.model.UserJson;
-import qa.guru.niffler.utils.RandomDataUtils;
 
 import static qa.guru.niffler.utils.RandomDataUtils.randomUserName;
 

@@ -10,7 +10,6 @@ import qa.guru.niffler.model.SpendJson;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.service.SpendClient;
 import qa.guru.niffler.service.impl.api.SpendAPIClient;
-import qa.guru.niffler.service.impl.database.SpendDbClient;
 
 import java.util.ArrayList;
 import java.util.Date;

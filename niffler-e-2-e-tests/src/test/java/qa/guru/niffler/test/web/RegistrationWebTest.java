@@ -3,11 +3,9 @@ package qa.guru.niffler.test.web;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import qa.guru.niffler.api.UserApiClient;
 import qa.guru.niffler.jupiter.extention.meta.WebTest;
 import qa.guru.niffler.page.RegisterPage;
 import qa.guru.niffler.service.impl.api.UserAPIClient;
-import qa.guru.niffler.utils.RandomDataUtils;
 
 import static qa.guru.niffler.utils.RandomDataUtils.randomUserName;
 

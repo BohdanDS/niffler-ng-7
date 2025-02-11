@@ -1,7 +1,7 @@
 package qa.guru.niffler.api;
 
-import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
+import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.SpendJson;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -11,7 +11,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

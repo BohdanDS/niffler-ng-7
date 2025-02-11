@@ -8,7 +8,6 @@ import qa.guru.niffler.model.TestData;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.service.UserClient;
 import qa.guru.niffler.service.impl.api.UserAPIClient;
-import qa.guru.niffler.service.impl.database.UserDbClient;
 import qa.guru.niffler.utils.RandomDataUtils;
 
 import java.util.ArrayList;

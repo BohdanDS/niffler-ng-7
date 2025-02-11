@@ -1,17 +1,14 @@
 package qa.guru.niffler.jupiter.extention;
 
 import com.github.jknack.handlebars.internal.lang3.ArrayUtils;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.jupiter.extention.meta.User;
 import qa.guru.niffler.model.CategoryJson;
-import org.junit.jupiter.api.extension.*;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.service.SpendClient;
 import qa.guru.niffler.service.impl.api.SpendAPIClient;
-import qa.guru.niffler.service.impl.database.SpendDbClient;
 
 import java.util.ArrayList;
 import java.util.List;
