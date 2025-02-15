@@ -55,12 +55,10 @@ public class    FriendsWebTest {
         friendsPage.verifyFriendsList(user.friend());
     }
 
+
     @User
     @Test
-    void findCreatedUserInTable(UserJson user){
-        loginPage.login("Bohdan", "123");
-        mainPage.getHeader().clickOnProfileIcon();
-        mainPage.getUserProfileMenuComponent().clickAllPeopleLink();
-        friendsPage.verifyFriendsList(user.username());
+    void newUserWithIncomeInvitationTest(){
+
     }
 }
