@@ -31,6 +31,10 @@ public class UserExtension implements BeforeEachCallback, ParameterResolver {
                     } else {
                         user = new UserJson(null, userAnno.userName(), null, null, null, CurrencyValues.EUR, null, null, null, new TestData(defaultPassword, null, null));
                     }
+
+                    if (userAnno.incomeInvitations().count() > 0) {
+                        usersClient.createIncomeInvitations(user, userAnno.incomeInvitations().count());
+                    }
                     context.getStore(NAMESPACE).put(
                             context.getUniqueId(),
                             user.addTestData(

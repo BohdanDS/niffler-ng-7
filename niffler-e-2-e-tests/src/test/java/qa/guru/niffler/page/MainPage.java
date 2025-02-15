@@ -4,7 +4,6 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import lombok.Getter;
 import qa.guru.niffler.page.components.Header;
-import qa.guru.niffler.page.components.UserProfileMenuComponent;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -17,7 +16,6 @@ public class MainPage {
     private final Header header = new Header();
 
     @Getter
-    private final UserProfileMenuComponent userProfileMenuComponent = new UserProfileMenuComponent();
     private final ElementsCollection tableRows = $("#spendings tbody").$$("tr");
 
     private final SelenideElement statistic = $("#stat"),

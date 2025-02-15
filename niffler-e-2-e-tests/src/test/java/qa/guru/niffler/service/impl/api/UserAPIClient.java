@@ -4,30 +4,40 @@ import qa.guru.niffler.api.UserApiClient;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.model.TestData;
 import qa.guru.niffler.model.UserJson;
+import retrofit2.Response;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static qa.guru.niffler.utils.RandomDataUtils.randomUserName;
 
 public class UserAPIClient implements qa.guru.niffler.service.UserClient {
 
     private final UserApiClient userApiClient = new UserApiClient();
+
     @Override
     public UserJson createUser(String username, String password) {
         userApiClient.createUser(username, password);
-        return new UserJson(null, username, null, null, null, CurrencyValues.RUB, null, null,null, new TestData(password, null, null));
+        return new UserJson(null, username, null, null, null, CurrencyValues.RUB, null, null, null, new TestData(password, null, null));
     }
 
     @Override
-    public void createIncomeInvitations(UserJson targetUser, int count) {
+    public List<UserJson> createIncomeInvitations(UserJson targetUser, int count) {
+
+        List<UserJson> incomeInvitaitonList = new ArrayList<>();
+
         if (count > 0) {
             for (int i = 0; i < count; i++) {
                 String username = randomUserName();
-                String password = "12345";
+                String password = "123";
 
-                createUser(username, password);
+                UserJson user = createUser(username, password);
 
                 userApiClient.sendInvitation(targetUser.username(), username);
+                incomeInvitaitonList.add(user);
             }
         }
+        return incomeInvitaitonList;
     }
 
     @Override
@@ -35,7 +45,7 @@ public class UserAPIClient implements qa.guru.niffler.service.UserClient {
         if (count > 0) {
             for (int i = 0; i < count; i++) {
                 String username = randomUserName();
-                String password = "12345";
+                String password = "123";
 
                 createUser(username, password);
 
@@ -59,6 +69,7 @@ public class UserAPIClient implements qa.guru.niffler.service.UserClient {
             }
         }
     }
+
     public void createFriend(UserJson requester, UserJson addressee) {
         userApiClient.sendInvitation(requester.username(), addressee.username());
         userApiClient.sendInvitation(addressee.username(), requester.username());

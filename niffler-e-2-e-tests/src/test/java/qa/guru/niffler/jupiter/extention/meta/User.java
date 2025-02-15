@@ -20,9 +20,10 @@ public @interface User {
 
     Spending[] spendings() default {};
 
-    IncomeInvitation[] incomeInvitations() default {};
+    IncomeInvitation incomeInvitations() default @IncomeInvitation(count = 0);
+};
 
-    OutcomeInvitation[] outcomeInvitations() default {};
+//    OutcomeInvitation outcomeInvitations() default @OutcomeInvitation(count = 0)
+//
+//    Friend friends();
 
-    Friend[] friends() default {};
-}

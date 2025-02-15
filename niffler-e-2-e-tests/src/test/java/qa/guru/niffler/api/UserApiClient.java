@@ -111,10 +111,10 @@ public class UserApiClient {
         return response.body();
     }
 
-    public UserJson sendInvitation(String username, String targetUsername) {
+    public UserJson sendInvitation(String targetUsername, String username) {
         final Response<UserJson> response;
         try {
-            response = usersUDApi.sendInvitation(username, targetUsername)
+            response = usersUDApi.sendInvitation(targetUsername, username)
                     .execute();
         } catch (IOException e) {
             throw new AssertionError(e);

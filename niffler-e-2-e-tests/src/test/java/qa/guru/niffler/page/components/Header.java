@@ -12,15 +12,17 @@ public class Header {
             self = $("#root header"),
             profileIcon = self.$("button"),
             spendingBtn = self.$("[href='/spending']"),
-            profileLink = $("a[href='/profile']"),
-            friendsLink = $("a[href='/friends']"),
-            allPeopleLink = $("a[href='/all']"),
-            signOutButton = $$("li").find(text("Sign out"));
+            headerMenu = $("ul[role='menu']");
+    private final SelenideElement profileLink = headerMenu.findAll("li").find(text("Profile"));
+    private final SelenideElement friendsLink = headerMenu.findAll("li").find(text("Friends"));
+    private final SelenideElement allPeopleLink = headerMenu.findAll("li").find(text("All People"));
+    private final SelenideElement signOutBtn = headerMenu.findAll("li").find(text("Sign out"));
     ;
 
 
-    public void clickOnProfileIcon() {
+    public Header clickOnProfileIcon() {
         profileIcon.click();
+        return this;
     }
 
     public FriendsPage toFriendsPage() {
@@ -39,12 +41,12 @@ public class Header {
     }
 
     public LoginPage toLoginPage() {
-        signOutButton.click();
+        signOutBtn.click();
         return new LoginPage();
     }
 
     public SpendingPage toSpendingPage() {
-        signOutButton.click();
+        signOutBtn.click();
         return new SpendingPage();
     }
 

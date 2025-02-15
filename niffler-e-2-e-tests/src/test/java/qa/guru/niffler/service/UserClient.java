@@ -2,10 +2,12 @@ package qa.guru.niffler.service;
 
 import qa.guru.niffler.model.UserJson;
 
+import java.util.List;
+
 public interface UserClient {
     UserJson createUser(String username, String password);
 
-    void createIncomeInvitations(UserJson targetUser, int count);
+    List<UserJson> createIncomeInvitations(UserJson targetUser, int count);
 
     void createOutcomeInvitations(UserJson targetUser, int count);
 

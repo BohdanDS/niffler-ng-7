@@ -4,6 +4,8 @@ import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 
+import java.util.List;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
@@ -24,8 +26,11 @@ public class FriendsPage {
         emptyFriendsTable.shouldBe(visible).shouldHave(text("There are no users yet"));
     }
 
-    public void verifyIncomeInvitation(String userName) {
-        incomeRequestsRows.findBy(text(userName)).$("p").shouldHave(text(userName)).shouldBe(visible);
+    public void verifyIncomeInvitation(List<String> names) {
+        for (String name : names) {
+            incomeRequestsRows.findBy(text(name)).$("p").shouldHave(text(name)).shouldBe(visible);
+        }
+
     }
 
     public void setValueIntoSearch(String value) {
@@ -38,15 +43,13 @@ public class FriendsPage {
 
     public void verifyFriendsList(String userName) {
         if (allFriendsRows.findBy(text(userName)).isDisplayed()) {
-            // Если пользователь найден, проверяем, что он видим и текст совпадает
-            allFriendsRows.findBy(text(userName)).$("p").shouldHave(text(userName)).shouldBe(visible);
+            System.out.println("123");
+            allFriendsRows.findBy(text(userName)).$("p").shouldHave(text(userName));
         } else {
-            // Если пользователь не найден, вводим его имя в строку поиска
             searchInputField.setValue(userName).pressEnter();
             allPeopleRows.shouldHave(CollectionCondition.sizeGreaterThan(0));
-            // Повторно проверяем, появился ли пользователь в таблице
 
-            allPeopleRows.findBy(text(userName)).$("p").shouldHave(text(userName)).shouldBe(visible);
+            allPeopleRows.findBy(text(userName)).$("p").shouldHave(text(userName));
         }
     }
 

@@ -12,4 +12,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @ExtendWith(UserExtension.class)
 public @interface IncomeInvitation {
+    int count();
 }

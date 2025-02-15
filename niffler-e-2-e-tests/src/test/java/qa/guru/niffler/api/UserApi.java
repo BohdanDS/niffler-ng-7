@@ -31,14 +31,14 @@ public interface UserApi {
     Call<UserJson> updateUser(@Body UserJson user);
 
     @POST("/internal/invitations/send")
-    Call<UserJson> sendInvitation(@Query("username") String username,
-                                  @Query("targetUsername") String targetUsername);
+    Call<UserJson> sendInvitation(@Query("targetUsername") String username,
+                                  @Query("username") String targetUsername);
 
     @POST("/internal/invitations/accept")
-    Call<UserJson> acceptInvitation(@Query("username") String username,
-                                    @Query("targetUsername") String targetUsername);
+    Call<UserJson> acceptInvitation(@Query("targetUsername") String username,
+                                    @Query("username") String targetUsername);
 
     @POST("/internal/invitations/decline")
-    Call<UserJson> declineInvitation(@Query("username") String username,
-                                     @Query("targetUsername") String targetUsername);
+    Call<UserJson> declineInvitation(@Query("targetUsername") String username,
+                                     @Query("username") String targetUsername);
 }

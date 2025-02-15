@@ -17,6 +17,7 @@ import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.service.UserClient;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static qa.guru.niffler.utils.RandomDataUtils.randomUserName;
 
@@ -46,7 +47,7 @@ public class UserDbClient implements UserClient {
     }
 
     @Override
-    public void createIncomeInvitations(UserJson targetUser, int count) {
+    public List<UserJson> createIncomeInvitations(UserJson targetUser, int count) {
         if (count > 0) {
             UserEntity targetEntity = udUserRepository.findById(targetUser.id()).orElseThrow();
 
@@ -64,6 +65,7 @@ public class UserDbClient implements UserClient {
                 });
             }
         }
+        return null;
     }
 
     @Override
