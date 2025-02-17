@@ -5,6 +5,9 @@ import qa.guru.niffler.data.dao.AuthAuthorityDao;
 import qa.guru.niffler.data.entity.auth.Authority;
 import qa.guru.niffler.data.entity.auth.AuthorityEntity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +17,7 @@ import java.util.UUID;
 
 import static qa.guru.niffler.data.tpl.Connections.holder;
 
+@ParametersAreNonnullByDefault
 public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
 
     private static final Config CFG = Config.getInstance();
@@ -59,7 +63,7 @@ public class AuthAuthorityDaoJdbc implements AuthAuthorityDao {
     }
 
     @Override
-    public List<AuthorityEntity> getAuthorityByUserId(UUID id) {
+    public @Nonnull List<AuthorityEntity> getAuthorityByUserId(UUID id) {
         List<AuthorityEntity> authAuthorityEntities = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(

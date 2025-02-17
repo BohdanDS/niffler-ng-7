@@ -5,10 +5,13 @@ import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+@ParametersAreNonnullByDefault
 public class UserDataUserEntityRowMapper implements RowMapper<UserEntity> {
 
     public static UserDataUserEntityRowMapper instance = new UserDataUserEntityRowMapper();
@@ -17,7 +20,7 @@ public class UserDataUserEntityRowMapper implements RowMapper<UserEntity> {
 
     }
     @Override
-    public UserEntity mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+    public @Nonnull UserEntity mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         UserEntity userEntity = new UserEntity();
 
         userEntity.setId(resultSet.getObject("id", UUID.class));

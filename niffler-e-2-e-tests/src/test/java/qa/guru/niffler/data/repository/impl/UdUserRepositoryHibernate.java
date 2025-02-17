@@ -7,37 +7,39 @@ import qa.guru.niffler.data.entity.userdata.FriendshipStatus;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 import qa.guru.niffler.data.repository.UdUserRepository;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 import java.util.UUID;
 
 import static qa.guru.niffler.data.jpa.EntityManagers.em;
-
+@ParametersAreNonnullByDefault
 public class UdUserRepositoryHibernate implements UdUserRepository {
 
     private static final Config CFG = Config.getInstance();
     private final EntityManager entityManager = em(CFG.userDataJdbcUrl());
 
     @Override
-    public UserEntity createUser(UserEntity userEntity) {
+    public @Nonnull UserEntity createUser(UserEntity userEntity) {
         entityManager.joinTransaction();
         entityManager.persist(userEntity);
         return userEntity;
     }
 
     @Override
-    public UserEntity updateUser(UserEntity userEntity) {
+    public @Nonnull UserEntity updateUser(UserEntity userEntity) {
         entityManager.joinTransaction();
         entityManager.merge(userEntity);
         return userEntity;
     }
 
     @Override
-    public Optional<UserEntity> findById(UUID id) {
+    public @Nonnull Optional<UserEntity> findById(UUID id) {
         return Optional.ofNullable(entityManager.find(UserEntity.class, id));
     }
 
     @Override
-    public Optional<UserEntity> findByUsername(String username) {
+    public @Nonnull Optional<UserEntity> findByUsername(String username) {
         try {
             return Optional.of(entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.username =: username", UserEntity.class)
                     .setParameter("username", username)

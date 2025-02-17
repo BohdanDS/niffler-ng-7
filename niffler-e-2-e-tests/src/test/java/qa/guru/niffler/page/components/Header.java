@@ -5,7 +5,6 @@ import qa.guru.niffler.page.*;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
 
 public class Header {
     private final SelenideElement
@@ -46,7 +45,7 @@ public class Header {
     }
 
     public SpendingPage toSpendingPage() {
-        signOutBtn.click();
+        spendingBtn.click();
         return new SpendingPage();
     }
 

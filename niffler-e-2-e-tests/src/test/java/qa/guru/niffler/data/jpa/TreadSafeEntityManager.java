@@ -9,7 +9,6 @@ import jakarta.persistence.metamodel.Metamodel;
 
 import java.util.List;
 import java.util.Map;
-
 public class TreadSafeEntityManager implements EntityManager {
 
     private final ThreadLocal<EntityManager> threadEm = new ThreadLocal<>();

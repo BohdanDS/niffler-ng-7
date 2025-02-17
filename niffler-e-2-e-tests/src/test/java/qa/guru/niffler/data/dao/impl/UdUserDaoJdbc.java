@@ -5,6 +5,8 @@ import qa.guru.niffler.data.dao.UdUserDao;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,12 +18,13 @@ import java.util.UUID;
 
 import static qa.guru.niffler.data.tpl.Connections.holder;
 
+@ParametersAreNonnullByDefault
 public class UdUserDaoJdbc implements UdUserDao {
 
     private static final Config CFG = Config.getInstance();
 
     @Override
-    public UserEntity createUser(UserEntity userEntity) {
+    public @Nonnull UserEntity createUser(UserEntity userEntity) {
         try (PreparedStatement preparedStatement = holder(CFG.userDataJdbcUrl()).connection().prepareStatement(
                 "INSERT INTO \"user\" (username, currency, firstname, surname, photo, photo_small, full_name)"
                         + "VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -53,7 +56,7 @@ public class UdUserDaoJdbc implements UdUserDao {
     }
 
     @Override
-    public Optional<UserEntity> findById(UUID userId) {
+    public @Nonnull Optional<UserEntity> findById(UUID userId) {
         try (PreparedStatement preparedStatement = holder(CFG.userDataJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM user WHERE id = ?")) {
             preparedStatement.setObject(1, userId);
@@ -82,7 +85,7 @@ public class UdUserDaoJdbc implements UdUserDao {
     }
 
     @Override
-    public Optional<UserEntity> findByUsername(String userName) {
+    public @Nonnull Optional<UserEntity> findByUsername(String userName) {
         try (PreparedStatement preparedStatement = holder(CFG.userDataJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM user WHERE username = ?")) {
             preparedStatement.setObject(1, userName);
@@ -111,7 +114,7 @@ public class UdUserDaoJdbc implements UdUserDao {
     }
 
     @Override
-    public List<UserEntity> findAll() {
+    public @Nonnull List<UserEntity> findAll() {
 
         List<UserEntity> userEntities = new ArrayList<>();
 

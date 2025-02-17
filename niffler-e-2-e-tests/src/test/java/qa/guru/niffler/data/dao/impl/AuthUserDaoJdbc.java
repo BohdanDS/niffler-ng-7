@@ -6,6 +6,9 @@ import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.dao.AuthUserDao;
 import qa.guru.niffler.data.entity.auth.AuthUserEntity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static qa.guru.niffler.data.tpl.Connections.holder;
-
+@ParametersAreNonnullByDefault
 public class AuthUserDaoJdbc implements AuthUserDao {
 
 
@@ -25,7 +28,7 @@ public class AuthUserDaoJdbc implements AuthUserDao {
     private static final Config CFG = Config.getInstance();
 
     @Override
-    public AuthUserEntity createUser(AuthUserEntity authUserEntity) {
+    public @Nullable AuthUserEntity createUser(AuthUserEntity authUserEntity) {
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "INSERT INTO \"user\" (username, \"password\", enabled, account_non_expired, account_non_locked, credentials_non_expired) " +
                         "VALUES (?, ?, ?, ?, ?, ?)",
@@ -59,7 +62,7 @@ public class AuthUserDaoJdbc implements AuthUserDao {
     }
 
     @Override
-    public AuthUserEntity updateUser(AuthUserEntity authUserEntity) {
+    public @Nonnull AuthUserEntity updateUser(AuthUserEntity authUserEntity) {
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "UPDATE \"user\" SET username = ?, " +
                         "password = ?, " +
@@ -85,7 +88,7 @@ public class AuthUserDaoJdbc implements AuthUserDao {
     }
 
     @Override
-    public Optional<AuthUserEntity> findUserById(UUID id) {
+    public @Nonnull Optional<AuthUserEntity> findUserById(UUID id) {
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM \"user\" WHERE id = ?"
         )) {
@@ -115,7 +118,7 @@ public class AuthUserDaoJdbc implements AuthUserDao {
     }
 
     @Override
-    public Optional<AuthUserEntity> findUserByUsername(String username) {
+    public @Nonnull Optional<AuthUserEntity> findUserByUsername(String username) {
         try (PreparedStatement preparedStatement = holder(CFG.authJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM \"user\" WHERE username = ?"
         )) {
@@ -157,7 +160,7 @@ public class AuthUserDaoJdbc implements AuthUserDao {
     }
 
     @Override
-    public List<AuthUserEntity> findAll() {
+    public @Nonnull List<AuthUserEntity> findAll() {
 
         List<AuthUserEntity> authUserEntities = new ArrayList<>();
 

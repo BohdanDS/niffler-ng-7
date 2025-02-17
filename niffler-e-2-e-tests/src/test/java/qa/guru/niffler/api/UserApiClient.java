@@ -10,11 +10,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ParametersAreNonnullByDefault
 public class UserApiClient {
 
     private static final Config CFG = Config.getInstance();
@@ -39,7 +43,7 @@ public class UserApiClient {
     private final UserApi usersUDApi = retrofitUD.create(UserApi.class);
 
 
-    public UserJson createUser(String username, String password) {
+    public @Nonnull UserJson createUser(String username, String password) {
         String csrfToken;
         Response<Void> response;
 
@@ -75,7 +79,7 @@ public class UserApiClient {
         );
     }
 
-    public UserJson updateUser(UserJson user) {
+    public @Nullable UserJson updateUser(UserJson user) {
         final Response<UserJson> response;
         try {
             response = usersUDApi.updateUser(user)
@@ -87,7 +91,7 @@ public class UserApiClient {
         return response.body();
     }
 
-    public UserJson getUser(String username) {
+    public @Nullable UserJson getUser(String username) {
         final Response<UserJson> response;
         try {
             response = usersUDApi.getUser(username)
@@ -111,7 +115,7 @@ public class UserApiClient {
         return response.body();
     }
 
-    public UserJson sendInvitation(String targetUsername, String username) {
+    public @Nullable UserJson sendInvitation(String targetUsername, String username) {
         final Response<UserJson> response;
         try {
             response = usersUDApi.sendInvitation(targetUsername, username)
@@ -123,7 +127,7 @@ public class UserApiClient {
         return response.body();
     }
 
-    public UserJson acceptInvitation(String username, String targetUsername) {
+    public @Nullable UserJson acceptInvitation(String username, String targetUsername) {
         final Response<UserJson> response;
         try {
             response = usersUDApi.acceptInvitation(username, targetUsername)
@@ -135,7 +139,7 @@ public class UserApiClient {
         return response.body();
     }
 
-    public UserJson declineInvitation(String username, String targetUsername) {
+    public @Nullable UserJson declineInvitation(String username, String targetUsername) {
         final Response<UserJson> response;
         try {
             response = usersUDApi.declineInvitation(username, targetUsername)

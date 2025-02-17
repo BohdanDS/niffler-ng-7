@@ -69,7 +69,7 @@ public class UserDbClient implements UserClient {
     }
 
     @Override
-    public void createOutcomeInvitations(UserJson targetUser, int count) {
+    public List<UserJson> createOutcomeInvitations(UserJson targetUser, int count) {
         if (count > 0) {
             UserEntity targetEntity = udUserRepository.findById(targetUser.id()).orElseThrow();
 
@@ -87,10 +87,12 @@ public class UserDbClient implements UserClient {
                 });
             }
         }
+//        Заглушка
+        return null;
     }
 
     @Override
-    public void createFriends(UserJson targetUser, int count) {
+    public List<UserJson> createFriends(UserJson targetUser, int count) {
         if (count > 0) {
             UserEntity targetEntity = udUserRepository.findById(targetUser.id()).orElseThrow();
 
@@ -108,6 +110,7 @@ public class UserDbClient implements UserClient {
                 });
             }
         }
+        return null;
     }
 
     private UserEntity userEntity(String username) {

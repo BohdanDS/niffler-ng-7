@@ -9,7 +9,7 @@ public interface UserClient {
 
     List<UserJson> createIncomeInvitations(UserJson targetUser, int count);
 
-    void createOutcomeInvitations(UserJson targetUser, int count);
+    List<UserJson> createOutcomeInvitations(UserJson targetUser, int count);
 
-    void createFriends(UserJson targetUser, int count);
+    List<UserJson> createFriends(UserJson targetUser, int count);
 }

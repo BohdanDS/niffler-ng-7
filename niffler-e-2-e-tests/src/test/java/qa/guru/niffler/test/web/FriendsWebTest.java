@@ -6,9 +6,7 @@ import qa.guru.niffler.jupiter.extention.IncomeExtension;
 import qa.guru.niffler.jupiter.extention.UserExtension;
 import qa.guru.niffler.jupiter.extention.UsersQueueExtension.StaticUser;
 import qa.guru.niffler.jupiter.extention.UsersQueueExtension.UserType;
-import qa.guru.niffler.jupiter.extention.meta.IncomeRequest;
-import qa.guru.niffler.jupiter.extention.meta.User;
-import qa.guru.niffler.jupiter.extention.meta.WebTest;
+import qa.guru.niffler.jupiter.extention.meta.*;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.FriendsPage;
 import qa.guru.niffler.page.LoginPage;
@@ -19,7 +17,7 @@ import java.util.List;
 import static qa.guru.niffler.jupiter.extention.UsersQueueExtension.UserType.Type.*;
 
 @WebTest
-public class    FriendsWebTest {
+public class FriendsWebTest {
 
     MainPage mainPage = new MainPage();
     LoginPage loginPage = new LoginPage();
@@ -62,10 +60,43 @@ public class    FriendsWebTest {
     @User
     @IncomeRequest(count = 2)
     @Test
-    void newUserWithIncomeInvitationTest(UserJson user, List<String> requests){
-        System.out.println(requests);
+    void newUserWithIncomeInvitationTest(UserJson user, List<String> requests) {
         loginPage.login(user.username(), user.testData().password());
         mainPage.getHeader().clickOnProfileIcon().toFriendsPage().verifyIncomeInvitation(requests);
 
     }
+
+    @User
+    @OutcomeRequest(count = 3)
+    @Test
+    void newUserWithOutcomeRequests(UserJson user, List<String> requests) {
+        loginPage.login(user.username(), user.testData().password());
+        mainPage.getHeader().clickOnProfileIcon().toAllPeoplePage().verifyOutcomeInvitations(requests);
+        System.out.println("123");
+    }
+
+    @User
+    @FriendRequest(count = 2)
+    @Test
+    void newUserWithFriendsTest(UserJson user, List<String> requests) {
+        loginPage.login(user.username(), user.testData().password());
+        mainPage.getHeader().clickOnProfileIcon().toFriendsPage().verifyFriendsList(requests);
+    }
+
+    @User
+    @IncomeRequest(count = 1)
+    @Test
+    void declineInvitation(UserJson user, List<String> requests) {
+        loginPage.login(user.username(), user.testData().password());
+        mainPage.getHeader().clickOnProfileIcon().toFriendsPage().declineInvitation(requests.getFirst());
+    }
+
+    @User
+    @IncomeRequest(count = 1)
+    @Test
+    void acceptInvitation(UserJson user, List<String> requests) {
+        loginPage.login(user.username(), user.testData().password());
+        mainPage.getHeader().clickOnProfileIcon().toFriendsPage().acceptInvitation(requests.getFirst()).verifyFriendsList(requests);
+    }
+
 }

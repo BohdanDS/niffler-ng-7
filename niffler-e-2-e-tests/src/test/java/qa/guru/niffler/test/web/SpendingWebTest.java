@@ -7,10 +7,17 @@ import qa.guru.niffler.jupiter.annotation.Spending;
 import qa.guru.niffler.jupiter.extention.meta.User;
 import qa.guru.niffler.jupiter.extention.meta.WebTest;
 import qa.guru.niffler.model.SpendJson;
+import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
+import qa.guru.niffler.page.MainPage;
+
+import static qa.guru.niffler.utils.RandomDataUtils.randomCategoryName;
 
 @WebTest
 public class SpendingWebTest {
+
+    MainPage mainPage = new MainPage();
+    LoginPage loginPage = new LoginPage();
 
     @User(
             userName = "bohdan",
@@ -28,5 +35,16 @@ public class SpendingWebTest {
                 .updateDescription(newDescription)
                 .clickSaveBtn().
                 checkUpdatedDescription(newDescription);
+    }
+
+    @User
+    @Test
+    void createSpendingForNewUser(UserJson user) {
+        final String spendingCategory = randomCategoryName();
+        loginPage.login(user.username(), user.testData().password()).checkSuccessLogin();
+        mainPage.getHeader().toSpendingPage()
+                .setAmount()
+                .setCategory(spendingCategory)
+                .saveChange().checkSpendingInTable(spendingCategory);
     }
 }

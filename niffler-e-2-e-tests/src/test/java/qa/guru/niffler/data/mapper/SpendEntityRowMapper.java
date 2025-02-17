@@ -5,10 +5,13 @@ import qa.guru.niffler.data.entity.spend.CategoryEntity;
 import qa.guru.niffler.data.entity.spend.SpendEntity;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+@ParametersAreNonnullByDefault
 public class SpendEntityRowMapper implements RowMapper<SpendEntity> {
 
     public static final SpendEntityRowMapper instance = new SpendEntityRowMapper();
@@ -18,7 +21,7 @@ public class SpendEntityRowMapper implements RowMapper<SpendEntity> {
     }
 
     @Override
-    public SpendEntity mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+    public @Nonnull SpendEntity mapRow(ResultSet resultSet, int rowNum) throws SQLException {
         SpendEntity spendEntity = new SpendEntity();
         CategoryEntity categoryEntity = new CategoryEntity();
 

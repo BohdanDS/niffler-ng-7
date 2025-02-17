@@ -7,11 +7,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ParametersAreNonnullByDefault
 public class GhApiClient {
 
     private final static String GH_TOKEN_ENV = "GITHUB_TOKEN";
@@ -23,7 +25,7 @@ public class GhApiClient {
 
     private final GhApi ghApi = retrofit.create(GhApi.class);
 
-    public @Nonnull String issueState(@Nonnull String issueNumber) {
+    public @Nonnull String issueState(String issueNumber) {
         final Response<JsonNode> response;
         try {
             response = ghApi.issue(
