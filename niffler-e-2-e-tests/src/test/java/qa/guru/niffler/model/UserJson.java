@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 
+import javax.annotation.Nonnull;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public record UserJson(
         @JsonIgnore
         TestData testData) {
 
-    public static UserJson fromEntity(UserEntity entity, FriendState friendState) {
+    public static @Nonnull UserJson fromEntity(@Nonnull UserEntity entity, FriendState friendState) {
 
         return new UserJson(
                 entity.getId(),
@@ -48,7 +49,7 @@ public record UserJson(
         );
     }
 
-    public UserJson addTestData(TestData testData) {
+    public @Nonnull UserJson addTestData(@Nonnull TestData testData) {
         return new UserJson(id, username, firstname, surname, fullname, currency, photo, photoSmall, friendState, testData);
     }
 }

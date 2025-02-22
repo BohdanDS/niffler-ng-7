@@ -7,6 +7,8 @@ import qa.guru.niffler.data.entity.userdata.UserEntity;
 import qa.guru.niffler.data.mapper.UserDataUserEntityRowMapper;
 import qa.guru.niffler.data.repository.UdUserRepository;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,13 +16,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static qa.guru.niffler.data.tpl.Connections.holder;
-
+@ParametersAreNonnullByDefault
 public class UdUserRepositoryJdbc implements UdUserRepository {
 
     private static final Config CFG = Config.getInstance();
 
     @Override
-    public UserEntity createUser(UserEntity userEntity) {
+    public @Nonnull UserEntity createUser(UserEntity userEntity) {
         try (PreparedStatement preparedStatement = holder(CFG.userDataJdbcUrl()).connection().prepareStatement(
                 "INSERT INTO \"user\" (username, currency, firstname, surname, photo, photo_small, full_name) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -55,12 +57,12 @@ public class UdUserRepositoryJdbc implements UdUserRepository {
     }
 
     @Override
-    public UserEntity updateUser(UserEntity userEntity) {
+    public @Nonnull UserEntity updateUser(UserEntity userEntity) {
         return null;
     }
 
     @Override
-    public Optional<UserEntity> findById(UUID userId) {
+    public @Nonnull Optional<UserEntity> findById(UUID userId) {
         try (PreparedStatement preparedStatement = holder(CFG.userDataJdbcUrl()).connection().prepareStatement(
                 "SELECT * FROM \"user\" u LEFT JOIN friendship f ON (u.id = f.addressee_id OR u.id = f.requester_id)\n" +
                         "WHERE u.id = ?"
@@ -118,7 +120,7 @@ public class UdUserRepositoryJdbc implements UdUserRepository {
     }
 
     @Override
-    public Optional<UserEntity> findByUsername(String username) {
+    public @Nonnull Optional<UserEntity> findByUsername(String username) {
         return Optional.empty();
     }
 

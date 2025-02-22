@@ -9,12 +9,16 @@ import qa.guru.niffler.data.entity.auth.AuthorityEntity;
 import qa.guru.niffler.data.mapper.AuthAutorityEntityRowMapper;
 import qa.guru.niffler.data.tpl.DataSources;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 
+@ParametersAreNonnullByDefault
 public class AuthAuthorityDaoSpringJdbc implements AuthAuthorityDao {
 
     private static final Config CFG = Config.getInstance();
@@ -61,7 +65,7 @@ public class AuthAuthorityDaoSpringJdbc implements AuthAuthorityDao {
     }
 
     @Override
-    public List<AuthorityEntity> getAuthorityByUserId(UUID id) {
+    public @Nonnull List<AuthorityEntity> getAuthorityByUserId(UUID id) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(DataSources.dataSource(CFG.authJdbcUrl()));
         return jdbcTemplate.query(
                 connection -> {

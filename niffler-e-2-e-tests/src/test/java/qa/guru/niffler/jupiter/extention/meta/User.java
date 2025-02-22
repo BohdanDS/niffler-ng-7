@@ -1,8 +1,7 @@
 package qa.guru.niffler.jupiter.extention.meta;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import qa.guru.niffler.jupiter.annotation.Category;
-import qa.guru.niffler.jupiter.annotation.Spending;
+import qa.guru.niffler.jupiter.annotation.*;
 import qa.guru.niffler.jupiter.extention.CategoryExtension;
 import qa.guru.niffler.jupiter.extention.SpendingExtension;
 import qa.guru.niffler.jupiter.extention.UserExtension;
@@ -20,4 +19,11 @@ public @interface User {
     Category[] categories() default {};
 
     Spending[] spendings() default {};
-}
+
+    IncomeInvitation incomeInvitations() default @IncomeInvitation(count = 0);
+};
+
+//    OutcomeInvitation outcomeInvitations() default @OutcomeInvitation(count = 0)
+//
+//    Friend friends();
+

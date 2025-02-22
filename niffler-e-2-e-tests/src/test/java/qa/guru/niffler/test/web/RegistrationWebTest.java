@@ -5,6 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import qa.guru.niffler.jupiter.extention.meta.WebTest;
 import qa.guru.niffler.page.RegisterPage;
+import qa.guru.niffler.service.impl.api.UserAPIClient;
+
+import static qa.guru.niffler.utils.RandomDataUtils.randomUserName;
 
 @WebTest
 @DisplayName("Registrations Web tests")
@@ -14,6 +17,8 @@ public class RegistrationWebTest {
     private static final String USER_NAME = faker.name().username();
     private static final String EXISTING_USER = "Bohdan";
     private static final String PASSWORD = "123";
+
+    private final UserAPIClient userAPIClient = new UserAPIClient();
 
     @Test
     public void newUserSuccessRegistration(){
@@ -46,6 +51,11 @@ public class RegistrationWebTest {
                 .setPasswordSubmit(faker.internet().password())
                 .submitRegistration()
                 .validationMessageIsDisplayed();
+    }
+
+    @Test
+    public void registrationApiTest(){
+        userAPIClient.createUser(randomUserName(), "123");
     }
 
 }

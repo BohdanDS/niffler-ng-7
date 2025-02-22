@@ -16,6 +16,7 @@ public class LoginTest {
     private static final Config CFG = Config.getInstance();
 
     @User(
+            userName = "Cucumber-5",
             categories = {
                     @Category(name = "Магазины", archived = false),
                     @Category(name = "Бары", archived = true)

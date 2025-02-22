@@ -8,9 +8,11 @@ import qa.guru.niffler.data.entity.auth.AuthUserEntity;
 import qa.guru.niffler.data.entity.auth.AuthorityEntity;
 import qa.guru.niffler.data.repository.AuthUserRepository;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 import java.util.UUID;
-
+@ParametersAreNonnullByDefault
 public class AuthUserRepositorySpringJdbc implements AuthUserRepository {
 
     private final AuthUserDao authUserDao = new AuthUserDaoSpringJdbc();
@@ -24,14 +26,14 @@ public class AuthUserRepositorySpringJdbc implements AuthUserRepository {
     }
 
     @Override
-    public AuthUserEntity updateUser(AuthUserEntity authUserEntity) {
+    public @Nonnull AuthUserEntity updateUser(AuthUserEntity authUserEntity) {
         authUserDao.updateUser(authUserEntity);
         authAuthorityDao.update(authUserEntity.getAuthorities().toArray(AuthorityEntity[]::new));
         return authUserEntity;
     }
 
     @Override
-    public Optional<AuthUserEntity> findUserById(UUID id) {
+    public @Nonnull Optional<AuthUserEntity> findUserById(UUID id) {
         Optional<AuthUserEntity> userEntity = authUserDao.findUserById(id);
         userEntity.ifPresent(authUserEntity -> {
             authUserEntity.addAuthorities(
@@ -42,7 +44,7 @@ public class AuthUserRepositorySpringJdbc implements AuthUserRepository {
     }
 
     @Override
-    public Optional<AuthUserEntity> findUserByUsername(String username) {
+    public @Nonnull Optional<AuthUserEntity> findUserByUsername(String username) {
         Optional<AuthUserEntity> userEntity = authUserDao.findUserByUsername(username);
         userEntity.ifPresent(authUserEntity -> {
             authUserEntity.addAuthorities(

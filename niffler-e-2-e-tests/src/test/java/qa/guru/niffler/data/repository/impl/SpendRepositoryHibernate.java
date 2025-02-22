@@ -8,45 +8,47 @@ import qa.guru.niffler.data.entity.spend.CategoryEntity;
 import qa.guru.niffler.data.entity.spend.SpendEntity;
 import qa.guru.niffler.data.repository.SpendRepository;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import static qa.guru.niffler.data.jpa.EntityManagers.em;
-
+@ParametersAreNonnullByDefault
 public class SpendRepositoryHibernate implements SpendRepository {
 
     private static final Config CFG = Config.getInstance();
     private final EntityManager entityManager = em(CFG.spendJdbcUrl());
 
     @Override
-    public SpendEntity createSpend(SpendEntity spendEntity) {
+    public @Nonnull SpendEntity createSpend(SpendEntity spendEntity) {
         entityManager.joinTransaction();
         entityManager.persist(spendEntity);
         return spendEntity;
     }
 
     @Override
-    public SpendEntity updateSpend(SpendEntity spendEntity) {
+    public @Nonnull SpendEntity updateSpend(SpendEntity spendEntity) {
         entityManager.joinTransaction();
         entityManager.merge(spendEntity);
         return spendEntity;
     }
 
     @Override
-    public CategoryEntity createCategory(CategoryEntity categoryEntity) {
+    public @Nonnull CategoryEntity createCategory(CategoryEntity categoryEntity) {
         entityManager.joinTransaction();
         entityManager.persist(categoryEntity);
         return categoryEntity;
     }
 
     @Override
-    public Optional<CategoryEntity> findCategoryById(UUID id) {
+    public @Nonnull Optional<CategoryEntity> findCategoryById(UUID id) {
         return Optional.ofNullable(entityManager.find(CategoryEntity.class, id));
     }
 
     @Override
-    public Optional<CategoryEntity> findCategoryByUsernameAndSpendName(String username, String name) {
+    public @Nonnull Optional<CategoryEntity> findCategoryByUsernameAndSpendName(String username, String name) {
         try {
             TypedQuery<CategoryEntity> query = entityManager.createQuery(
                     "SELECT c FROM CategoryEntity c " +
@@ -62,12 +64,12 @@ public class SpendRepositoryHibernate implements SpendRepository {
     }
 
     @Override
-    public Optional<SpendEntity> findSpendById(UUID id) {
+    public @Nonnull Optional<SpendEntity> findSpendById(UUID id) {
         return Optional.ofNullable(entityManager.find(SpendEntity.class, id));
     }
 
     @Override
-    public Optional<SpendEntity> findByUsernameAndSpendDescription(String username, String description) {
+    public @Nonnull Optional<SpendEntity> findByUsernameAndSpendDescription(String username, String description) {
         try {
             TypedQuery<SpendEntity> query = entityManager.createQuery(
                     "SELECT s FROM SpendEntity s " +
@@ -83,7 +85,7 @@ public class SpendRepositoryHibernate implements SpendRepository {
     }
 
     @Override
-    public List<SpendEntity> findSpendByUsername(String username) {
+    public @Nonnull List<SpendEntity> findSpendByUsername(String username) {
         TypedQuery<SpendEntity> query = entityManager.createQuery(
                 "SELECT s FROM SpendEntity s WHERE s.username = :username",
                 SpendEntity.class

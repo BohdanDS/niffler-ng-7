@@ -2,45 +2,80 @@ package qa.guru.niffler.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.Keys;
+import io.qameta.allure.Step;
+import lombok.Getter;
+import qa.guru.niffler.page.components.Search;
+
+import java.util.List;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class FriendsPage {
 
-    private final SelenideElement searchInput = $("input[aria-label='search']"),
+    @Getter
+    private final Search search = new Search();
+
+    private final SelenideElement
             emptyFriendsTable = $("#simple-tabpanel-friends"),
-            tabsSwitcher = $("a[aria-selected='false']");
+            friendsTab = $("a[aria-selected='false']"),
+            allPeopleTab = $("a[aria-selected='true']"),
+            popUp = $("div[role='dialog']");
     private final ElementsCollection allPeopleRows = $$("#all tr"),
             allFriendsRows = $$("#friends tr"),
             incomeRequestsRows = $$("#requests tr");
 
+    @Step("Подтвердить что таблица друзей пустая")
     public void verifyEmptyFriendsTable() {
         emptyFriendsTable.shouldBe(visible).shouldHave(text("There are no users yet"));
     }
 
-    public void verifyIncomeInvitation(String userName) {
-        incomeRequestsRows.findBy(text(userName)).$("p").shouldHave(text(userName)).shouldBe(visible);
+    @Step("Проверить список входящих приглашений")
+    public void verifyIncomeInvitation(List<String> names) {
+        for (String name : names) {
+            incomeRequestsRows.findBy(text(name)).$("p").shouldHave(text(name)).shouldBe(visible);
+        }
+
     }
 
-    public void setValueIntoSearch(String value) {
-        searchInput.setValue(value).pressEnter();
+    @Step("Проверить список друзей")
+    public void verifyFriendsList(List<String> names) {
+        for (String name : names) {
+            allFriendsRows.findBy(text(name)).$("p").shouldHave(text(name)).shouldBe(visible);
+        }
     }
 
-    public void verifyOutcomeRequest(String userName) {
-        allPeopleRows.findBy(text(userName)).$("span").shouldHave(text("Waiting...")).shouldBe(visible);
-    }
-
-    public void verifyFriendsList(String userName) {
-        allFriendsRows.findBy(text(userName)).$("p").shouldHave(text(userName)).shouldBe(visible);
-    }
-
-    public FriendsPage switchTab() {
-        tabsSwitcher.click();
+    @Step("Принимаем заявку в друзья от {username}")
+    public FriendsPage acceptInvitation(String username) {
+        incomeRequestsRows.findBy(text(username)).$(byText("Accept")).click();
         return this;
+    }
+
+    @Step("Отклоняем заявку в друзья от {username}")
+    public FriendsPage declineInvitation(String username) {
+        incomeRequestsRows.findBy(text(username)).$(byText("Decline")).click();
+        confirmDecline();
+        verifyEmptyFriendsTable();
+        return this;
+    }
+
+    public FriendsPage clickFriendsTab() {
+        friendsTab.click();
+        return this;
+    }
+
+    public FriendsPage clickAllPeopleTab() {
+        allPeopleTab.click();
+        return this;
+    }
+
+
+    @Step("Подтвердить отклонение заявки в друзья")
+    private void confirmDecline() {
+        popUp.$(byText("Decline")).click();
     }
 
 }

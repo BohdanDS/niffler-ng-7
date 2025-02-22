@@ -7,8 +7,8 @@ import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.SpendJson;
 import qa.guru.niffler.model.UserJson;
-import qa.guru.niffler.service.SpendDbClient;
-import qa.guru.niffler.service.UserDbClient;
+import qa.guru.niffler.service.impl.database.SpendDbClient;
+import qa.guru.niffler.service.impl.database.UserDbClient;
 
 import java.util.Date;
 

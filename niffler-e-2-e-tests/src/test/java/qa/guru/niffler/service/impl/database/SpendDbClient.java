@@ -1,4 +1,4 @@
-package qa.guru.niffler.service;
+package qa.guru.niffler.service.impl.database;
 
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.entity.spend.CategoryEntity;
@@ -8,6 +8,7 @@ import qa.guru.niffler.data.repository.impl.SpendRepositoryHibernate;
 import qa.guru.niffler.data.tpl.XaTransactionTemplate;
 import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.SpendJson;
+import qa.guru.niffler.service.SpendClient;
 
 import java.util.List;
 import java.util.Optional;

@@ -9,7 +9,7 @@ import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.SpendJson;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.service.SpendClient;
-import qa.guru.niffler.service.SpendDbClient;
+import qa.guru.niffler.service.impl.api.SpendAPIClient;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +19,7 @@ public class SpendingExtension implements BeforeEachCallback, ParameterResolver 
 
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(SpendingExtension.class);
 
-    private final SpendClient spendClient = new SpendDbClient();
+    private final SpendClient spendClient = new SpendAPIClient();
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {

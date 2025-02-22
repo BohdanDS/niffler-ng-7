@@ -6,12 +6,24 @@ import qa.guru.niffler.config.Config;
 import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.jupiter.extention.meta.User;
 import qa.guru.niffler.model.CategoryJson;
+import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
+import qa.guru.niffler.page.MainPage;
 import qa.guru.niffler.page.ProfilePage;
+import qa.guru.niffler.page.components.Header;
+import qa.guru.niffler.utils.RandomDataUtils;
+
+import static qa.guru.niffler.utils.RandomDataUtils.randomCategoryName;
+import static qa.guru.niffler.utils.RandomDataUtils.randomName;
 
 public class ProfileTest {
 
+    MainPage mainPage = new MainPage();
+    LoginPage loginPage = new LoginPage();
+
     private static final Config CFG = Config.getInstance();
+
+    Header header = new Header();
 
     @User(
             userName = "bohdan",
@@ -43,5 +55,29 @@ public class ProfileTest {
 
         Selenide.open(CFG.frontUrl() + "profile", ProfilePage.class)
                 .checkCategoryInCategoryList(category.name());
+    }
+
+    @User(userName = "Bohdan")
+    @Test
+    void test(UserJson user) {
+        Selenide.open(CFG.frontUrl(), LoginPage.class)
+                .login(user.username(), user.testData().password())
+                .checkSuccessLogin();
+        header.clickOnProfileIcon();
+        header.toFriendsPage();
+
+    }
+
+    @User
+    @Test
+    void editProfileTest(UserJson user) {
+        final String spendingCategory = randomCategoryName();
+        loginPage.login(user.username(), user.testData().password()).checkSuccessLogin();
+        mainPage.getHeader().clickOnProfileIcon().toProfilePage()
+                .setName(randomName())
+                .setNewCategory(spendingCategory)
+                .saveChanges()
+                .verifySuccessPopUp();
+
     }
 }
