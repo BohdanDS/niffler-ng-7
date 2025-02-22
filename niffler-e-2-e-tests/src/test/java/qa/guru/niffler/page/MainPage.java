@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 
-public class MainPage {
+public class MainPage extends BasePage<MainPage>{
 
     @Getter
     private final Header header = new Header();
@@ -42,5 +42,9 @@ public class MainPage {
         tableRows.findBy(text(spendingCategory)).shouldBe(visible);
     }
 
+    @Override
+    public MainPage checkThatPageLoaded() {
+        return null;
+    }
 }
 

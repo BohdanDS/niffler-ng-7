@@ -5,7 +5,7 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class EditSpendingPage {
+public class EditSpendingPage extends BasePage<EditSpendingPage> {
 
     private final SelenideElement
             descriptionInput = $("#description"),
@@ -24,5 +24,10 @@ public class EditSpendingPage {
         saveBtn.click();
 
         return new MainPage();
+    }
+
+    @Override
+    public EditSpendingPage checkThatPageLoaded() {
+        return null;
     }
 }

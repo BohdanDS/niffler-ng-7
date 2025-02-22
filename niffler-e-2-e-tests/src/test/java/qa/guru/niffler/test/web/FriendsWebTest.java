@@ -1,20 +1,13 @@
 package qa.guru.niffler.test.web;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import qa.guru.niffler.jupiter.extention.IncomeExtension;
-import qa.guru.niffler.jupiter.extention.UserExtension;
-import qa.guru.niffler.jupiter.extention.UsersQueueExtension.StaticUser;
-import qa.guru.niffler.jupiter.extention.UsersQueueExtension.UserType;
-import qa.guru.niffler.jupiter.extention.meta.*;
+import qa.guru.niffler.jupiter.extension.meta.*;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.FriendsPage;
 import qa.guru.niffler.page.LoginPage;
 import qa.guru.niffler.page.MainPage;
 
 import java.util.List;
-
-import static qa.guru.niffler.jupiter.extention.UsersQueueExtension.UserType.Type.*;
 
 @WebTest
 public class FriendsWebTest {
@@ -63,7 +56,6 @@ public class FriendsWebTest {
     void newUserWithIncomeInvitationTest(UserJson user, List<String> requests) {
         loginPage.login(user.username(), user.testData().password());
         mainPage.getHeader().clickOnProfileIcon().toFriendsPage().verifyIncomeInvitation(requests);
-
     }
 
     @User
@@ -72,7 +64,6 @@ public class FriendsWebTest {
     void newUserWithOutcomeRequests(UserJson user, List<String> requests) {
         loginPage.login(user.username(), user.testData().password());
         mainPage.getHeader().clickOnProfileIcon().toAllPeoplePage().verifyOutcomeInvitations(requests);
-        System.out.println("123");
     }
 
     @User

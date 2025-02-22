@@ -5,8 +5,16 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Condition.empty;
 import static com.codeborne.selenide.Selenide.$;
 
-public class Search {
+public class Search extends BaseComponent<Search> {
     private final SelenideElement self = $("input[aria-label='search']");
+
+    protected Search(SelenideElement self) {
+        super(self);
+    }
+
+    public Search() {
+        super($("input[aria-label='search']"));
+    }
 
     public void search(String search) {
         self.clear();

@@ -10,13 +10,12 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class ProfilePage {
+public class ProfilePage extends BasePage<ProfilePage> {
     private final SelenideElement
             uploadNewImageBtn = $(".css-1f8fote"),
             nameInput = $("input[id='name']"),
             saveChangesBtn = $("button[type='submit']"),
             categoryInput = $("#category"),
-            popUp = $("div[role='alert']"),
             showArchivedCheckbox = $("input[type='checkbox']");
     private final ElementsCollection bubbles = $$(".MuiChip-filled.MuiChip-colorPrimary");
     private final ElementsCollection bubblesArchived = $$(".MuiChip-filled.MuiChip-colorDefault");
@@ -69,8 +68,12 @@ public class ProfilePage {
     }
 
     @Step("Проверка поп-апа после успешного сохранения")
-    public void verifySuccessPopUp(){
-        popUp.shouldBe(visible).shouldHave(text(PROFILE_UPDATED));
+    public void verifySuccessPopUp() {
+        checkAlertMessage(PROFILE_UPDATED);
     }
 
+    @Override
+    public ProfilePage checkThatPageLoaded() {
+        return null;
+    }
 }

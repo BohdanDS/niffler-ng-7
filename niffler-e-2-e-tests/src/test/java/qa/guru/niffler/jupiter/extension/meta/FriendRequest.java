@@ -1,7 +1,7 @@
-package qa.guru.niffler.jupiter.extention.meta;
+package qa.guru.niffler.jupiter.extension.meta;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import qa.guru.niffler.jupiter.extention.OutcomeExtension;
+import qa.guru.niffler.jupiter.extension.FriendExtension;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,10 +12,9 @@ import java.util.List;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@ExtendWith(OutcomeExtension.class)
-public @interface OutcomeRequest {
-
+@ExtendWith(FriendExtension.class)
+public @interface FriendRequest {
     int count() default 0;
 
-    List<String> outcomeRequestUser = new ArrayList<>();
+    List<String> incomeRequestUser = new ArrayList<>();
 }

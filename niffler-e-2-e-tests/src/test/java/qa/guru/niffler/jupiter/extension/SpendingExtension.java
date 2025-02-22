@@ -1,10 +1,10 @@
-package qa.guru.niffler.jupiter.extention;
+package qa.guru.niffler.jupiter.extension;
 
 import com.github.jknack.handlebars.internal.lang3.ArrayUtils;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 import qa.guru.niffler.jupiter.annotation.Spending;
-import qa.guru.niffler.jupiter.extention.meta.User;
+import qa.guru.niffler.jupiter.extension.meta.User;
 import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.SpendJson;
 import qa.guru.niffler.model.UserJson;

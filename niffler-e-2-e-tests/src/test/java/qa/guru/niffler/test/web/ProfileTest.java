@@ -4,14 +4,13 @@ import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.jupiter.annotation.Category;
-import qa.guru.niffler.jupiter.extention.meta.User;
+import qa.guru.niffler.jupiter.extension.meta.User;
 import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
 import qa.guru.niffler.page.MainPage;
 import qa.guru.niffler.page.ProfilePage;
 import qa.guru.niffler.page.components.Header;
-import qa.guru.niffler.utils.RandomDataUtils;
 
 import static qa.guru.niffler.utils.RandomDataUtils.randomCategoryName;
 import static qa.guru.niffler.utils.RandomDataUtils.randomName;

@@ -2,13 +2,12 @@ package qa.guru.niffler.page;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import static com.codeborne.selenide.Condition.text;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RegisterPage {
+public class RegisterPage extends BasePage<RegisterPage> {
 
     private final SelenideElement
             usernameInput = $("input[name='username']"),
@@ -25,28 +24,30 @@ public class RegisterPage {
         return this;
     }
 
-    public RegisterPage setUsername(String username){
+    public RegisterPage setUsername(String username) {
         usernameInput.setValue(username);
         return new RegisterPage();
     }
 
-    public RegisterPage setPassword(String password){
+    public RegisterPage setPassword(String password) {
         passwordInput.setValue(password);
         return new RegisterPage();
     }
 
-    public RegisterPage setPasswordSubmit(String password){
+    public RegisterPage setPasswordSubmit(String password) {
         passwordSubmitInput.setValue(password);
         return new RegisterPage();
     }
 
-    public RegisterPage submitRegistration(){
+    public RegisterPage submitRegistration() {
         submitBtn.click();
         return this;
     }
+
     public void checkSuccessfulRegistrationMessage() {
         formParagraphSuccess.shouldBe(visible);
     }
+
     public void validationMessageIsDisplayed() {
         errorMessage.shouldBe(visible);
     }
@@ -55,4 +56,12 @@ public class RegisterPage {
         errorMessage.shouldBe(text(text));
     }
 
+    @Override
+    public RegisterPage checkThatPageLoaded() {
+        usernameInput.shouldBe(visible);
+        passwordInput.shouldBe(visible);
+        passwordSubmitInput.shouldBe(visible);
+        submitBtn.shouldBe(visible);
+        return this;
+    }
 }
