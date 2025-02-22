@@ -3,8 +3,6 @@ package qa.guru.niffler.page;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
-import lombok.Getter;
-import qa.guru.niffler.page.components.Search;
 
 import java.util.List;
 
@@ -14,10 +12,7 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class FriendsPage {
-
-    @Getter
-    private final Search search = new Search();
+public class FriendsPage extends BasePage<FriendsPage> {
 
     private final SelenideElement
             emptyFriendsTable = $("#simple-tabpanel-friends"),
@@ -78,4 +73,8 @@ public class FriendsPage {
         popUp.$(byText("Decline")).click();
     }
 
+    @Override
+    public FriendsPage checkThatPageLoaded() {
+        return null;
+    }
 }

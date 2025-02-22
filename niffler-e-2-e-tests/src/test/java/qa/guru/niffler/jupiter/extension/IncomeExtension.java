@@ -1,28 +1,27 @@
-package qa.guru.niffler.jupiter.extention;
+package qa.guru.niffler.jupiter.extension;
 
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
-import qa.guru.niffler.jupiter.extention.meta.FriendRequest;
-import qa.guru.niffler.jupiter.extention.meta.OutcomeRequest;
+import qa.guru.niffler.jupiter.extension.meta.IncomeRequest;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.service.UserClient;
 import qa.guru.niffler.service.impl.api.UserAPIClient;
 
 import java.util.List;
 
-public class FriendExtension implements BeforeEachCallback, ParameterResolver {
-    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(FriendExtension.class);
+public class IncomeExtension implements BeforeEachCallback, ParameterResolver {
+    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(IncomeExtension.class);
     private final UserClient usersClient = new UserAPIClient();
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
-        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), FriendRequest.class)
+        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), IncomeRequest.class)
                 .ifPresent(anno -> {
                     UserJson user = context.getStore(UserExtension.NAMESPACE).get(
                             context.getUniqueId(),
                             UserJson.class
                     );
-                    List<UserJson> list = usersClient.createFriends(user, anno.count());
+                    List<UserJson> list = usersClient.createIncomeInvitations(user, anno.count());
 
                     List<String> userNames = list.stream().map(UserJson::username).toList();
 

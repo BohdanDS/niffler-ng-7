@@ -1,10 +1,10 @@
-package qa.guru.niffler.jupiter.extention.meta;
+package qa.guru.niffler.jupiter.extension.meta;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import qa.guru.niffler.jupiter.annotation.*;
-import qa.guru.niffler.jupiter.extention.CategoryExtension;
-import qa.guru.niffler.jupiter.extention.SpendingExtension;
-import qa.guru.niffler.jupiter.extention.UserExtension;
+import qa.guru.niffler.jupiter.extension.CategoryExtension;
+import qa.guru.niffler.jupiter.extension.SpendingExtension;
+import qa.guru.niffler.jupiter.extension.UserExtension;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

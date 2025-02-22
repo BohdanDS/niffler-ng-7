@@ -3,9 +3,8 @@ package qa.guru.niffler.api;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.SpendJson;
+import qa.guru.niffler.api.core.RestClient;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,13 +16,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ParametersAreNonnullByDefault
-public class SpendApiClient {
-    private final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://127.0.0.1:8093")
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build();
+public class SpendApiClient extends RestClient {
 
-    private final SpendApi spendApi = retrofit.create(SpendApi.class);
+    private final SpendApi spendApi;
+
+    public SpendApiClient() {
+        super(CFG.spendUrl());
+        this.spendApi = create(SpendApi.class);
+    }
 
     public @Nullable SpendJson addSpend(SpendJson spend) {
         final Response<SpendJson> response;
@@ -62,9 +62,9 @@ public class SpendApiClient {
     }
 
     public @Nonnull List<SpendJson> getAllSpends(String username,
-                                        @Nullable CurrencyValues currencyValues,
-                                        @Nullable String from,
-                                        @Nullable String to) {
+                                                 @Nullable CurrencyValues currencyValues,
+                                                 @Nullable String from,
+                                                 @Nullable String to) {
         final Response<List<SpendJson>> response;
         try {
             response = spendApi.getAllSpends(username, currencyValues, from, to)

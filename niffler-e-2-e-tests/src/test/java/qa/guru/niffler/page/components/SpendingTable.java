@@ -5,16 +5,11 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import qa.guru.niffler.page.EditSpendingPage;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SpendingTable {
     private final SelenideElement self = $("#spendings tbody");

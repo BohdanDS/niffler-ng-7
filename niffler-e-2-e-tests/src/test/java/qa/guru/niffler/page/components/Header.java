@@ -6,7 +6,7 @@ import qa.guru.niffler.page.*;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 
-public class Header {
+public class Header extends BaseComponent<Header> {
     private final SelenideElement
             self = $("#root header"),
             profileIcon = self.$("button"),
@@ -16,7 +16,12 @@ public class Header {
     private final SelenideElement friendsLink = headerMenu.findAll("li").find(text("Friends"));
     private final SelenideElement allPeopleLink = headerMenu.findAll("li").find(text("All People"));
     private final SelenideElement signOutBtn = headerMenu.findAll("li").find(text("Sign out"));
-    ;
+
+    public Header() {
+        super($("#root header"));
+    }
+
+
 
 
     public Header clickOnProfileIcon() {

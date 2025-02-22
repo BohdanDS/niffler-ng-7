@@ -2,9 +2,9 @@ package qa.guru.niffler.test.web;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import qa.guru.niffler.jupiter.extention.UsersQueueExtension;
-import qa.guru.niffler.jupiter.extention.UsersQueueExtension.*;
-import qa.guru.niffler.jupiter.extention.UsersQueueExtension.UserType.Type;
+import qa.guru.niffler.jupiter.extension.UsersQueueExtension;
+import qa.guru.niffler.jupiter.extension.UsersQueueExtension.*;
+import qa.guru.niffler.jupiter.extension.UsersQueueExtension.UserType.Type;
 
 @ExtendWith(UsersQueueExtension.class)
 public class CheckQueueTest {
