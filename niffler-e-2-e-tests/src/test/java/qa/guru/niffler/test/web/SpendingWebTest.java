@@ -4,8 +4,8 @@ import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
 import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.jupiter.annotation.Spending;
-import qa.guru.niffler.jupiter.extention.meta.User;
-import qa.guru.niffler.jupiter.extention.meta.WebTest;
+import qa.guru.niffler.jupiter.extension.meta.User;
+import qa.guru.niffler.jupiter.extension.meta.WebTest;
 import qa.guru.niffler.model.SpendJson;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
@@ -18,6 +18,8 @@ public class SpendingWebTest {
 
     MainPage mainPage = new MainPage();
     LoginPage loginPage = new LoginPage();
+
+    private static final String SPENDING_CREATED = "New spending is successfully created";
 
     @User(
             userName = "bohdan",
@@ -45,6 +47,8 @@ public class SpendingWebTest {
         mainPage.getHeader().toSpendingPage()
                 .setAmount()
                 .setCategory(spendingCategory)
-                .saveChange().checkSpendingInTable(spendingCategory);
+                .saveChange()
+                .checkAlertMessage(SPENDING_CREATED)
+                .checkSpendingInTable(spendingCategory);
     }
 }

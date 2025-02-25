@@ -1,4 +1,4 @@
-package qa.guru.niffler.jupiter.extention;
+package qa.guru.niffler.jupiter.extension;
 
 import io.qameta.allure.Allure;
 import org.apache.commons.lang3.time.StopWatch;

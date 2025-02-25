@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.jupiter.annotation.Spending;
-import qa.guru.niffler.jupiter.extention.meta.User;
+import qa.guru.niffler.jupiter.extension.meta.User;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
 

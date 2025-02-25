@@ -1,14 +1,13 @@
 package qa.guru.niffler.api;
 
-import okhttp3.OkHttpClient;
 import org.apache.hc.core5.http.HttpStatus;
+import qa.guru.niffler.api.core.RestClient.EmtyRestClient;
+import qa.guru.niffler.api.core.ThreadSafeCookieStore;
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.model.TestData;
 import qa.guru.niffler.model.UserJson;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,45 +22,17 @@ public class UserApiClient {
 
     private static final Config CFG = Config.getInstance();
 
-    OkHttpClient client = new OkHttpClient.Builder()
-            .cookieJar(new MyCookieJar())
-            .build();
-
-    private final Retrofit retrofitAuth = new Retrofit.Builder()
-            .client(client)
-            .baseUrl(CFG.authUrl())
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build();
-
-    private final Retrofit retrofitUD = new Retrofit.Builder()
-            .client(client)
-            .baseUrl(CFG.userDataUrl())
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build();
-
-    private final UserApi usersAuthApi = retrofitAuth.create(UserApi.class);
-    private final UserApi usersUDApi = retrofitUD.create(UserApi.class);
+    private final UserApi usersAuthApi = new EmtyRestClient(CFG.authUrl()).create(UserApi.class);
+    private final UserApi usersUDApi = new EmtyRestClient(CFG.userDataUrl()).create(UserApi.class);
 
 
     public @Nonnull UserJson createUser(String username, String password) {
-        String csrfToken;
         Response<Void> response;
-
         try {
-            csrfToken = usersAuthApi.getToken()
-                    .execute()
-                    .headers()
-                    .get("X-XSRF-TOKEN");
+            usersAuthApi.getToken().execute();
+            response = usersAuthApi.createUser(username, password, password, ThreadSafeCookieStore.INSTANCE.cookieValue("XSRF-TOKEN")).execute();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-
-        try {
-            response = usersAuthApi.createUser(username, password, password, csrfToken)
-                    .execute();
-
-        } catch (IOException e) {
-            throw new AssertionError(e);
         }
         assertEquals(201, response.code());
 

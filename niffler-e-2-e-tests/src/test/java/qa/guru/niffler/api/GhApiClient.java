@@ -1,10 +1,8 @@
 package qa.guru.niffler.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import qa.guru.niffler.config.Config;
+import qa.guru.niffler.api.core.RestClient;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -14,16 +12,15 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ParametersAreNonnullByDefault
-public class GhApiClient {
+public class GhApiClient extends RestClient {
 
     private final static String GH_TOKEN_ENV = "GITHUB_TOKEN";
+    private final GhApi ghApi;
 
-    private final Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(Config.getInstance().ghUrl())
-            .addConverterFactory(JacksonConverterFactory.create())
-            .build();
-
-    private final GhApi ghApi = retrofit.create(GhApi.class);
+    public GhApiClient() {
+        super(CFG.ghUrl());
+        this.ghApi = create(GhApi.class);
+    }
 
     public @Nonnull String issueState(String issueNumber) {
         final Response<JsonNode> response;

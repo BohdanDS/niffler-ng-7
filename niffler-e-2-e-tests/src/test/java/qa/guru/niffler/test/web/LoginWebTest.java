@@ -4,8 +4,8 @@ package qa.guru.niffler.test.web;
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
 import qa.guru.niffler.config.Config;
-import qa.guru.niffler.jupiter.extention.meta.User;
-import qa.guru.niffler.jupiter.extention.meta.WebTest;
+import qa.guru.niffler.jupiter.extension.meta.User;
+import qa.guru.niffler.jupiter.extension.meta.WebTest;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
 

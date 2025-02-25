@@ -3,7 +3,6 @@ package qa.guru.niffler.page;
 import com.codeborne.selenide.ElementsCollection;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import qa.guru.niffler.page.components.Search;
 
 import java.util.List;
 
@@ -11,10 +10,9 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class AllPeoplePage {
+public class AllPeoplePage extends BasePage<AllPeoplePage> {
 
     @Getter
-    private final Search search = new Search();
     private static final String WAITING = "Waiting...";
 
     private final ElementsCollection allPeopleRows = $$("#all tr");
@@ -25,5 +23,10 @@ public class AllPeoplePage {
             allPeopleRows.findBy(text(name)).$("p").shouldHave(text(name)).shouldBe(visible);
             allPeopleRows.findBy(text(name)).$("span").shouldHave(text(WAITING)).shouldBe(visible);
         }
+    }
+
+    @Override
+    public AllPeoplePage checkThatPageLoaded() {
+        return null;
     }
 }

@@ -1,7 +1,7 @@
 package qa.guru.niffler.jupiter.annotation;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import qa.guru.niffler.jupiter.extention.CategoryExtension;
+import qa.guru.niffler.jupiter.extension.CategoryExtension;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
