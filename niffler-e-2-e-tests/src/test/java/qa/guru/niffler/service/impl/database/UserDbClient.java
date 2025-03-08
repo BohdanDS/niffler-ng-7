@@ -1,5 +1,6 @@
 package qa.guru.niffler.service.impl.database;
 
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import qa.guru.niffler.config.Config;
@@ -110,6 +111,11 @@ public class UserDbClient implements UserClient {
                 });
             }
         }
+        return null;
+    }
+
+    @Override
+    public List<UserJson> getUsers(@Nullable String username, @Nullable String searchQuery) {
         return null;
     }
 

@@ -11,6 +11,9 @@ import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
 import qa.guru.niffler.page.MainPage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static qa.guru.niffler.utils.RandomDataUtils.randomCategoryName;
 
 @WebTest
@@ -28,6 +31,7 @@ public class SpendingWebTest {
     )
     @Test
     public void changeCategoryDescriptionFromTableViewTest(SpendJson spendJson) {
+
 
         final String newDescription = "Css course";
 

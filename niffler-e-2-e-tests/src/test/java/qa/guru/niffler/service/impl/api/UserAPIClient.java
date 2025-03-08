@@ -5,6 +5,7 @@ import qa.guru.niffler.api.UserApiClient;
 import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.model.TestData;
 import qa.guru.niffler.model.UserJson;
+import qa.guru.niffler.service.UserClient;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -14,7 +15,7 @@ import java.util.List;
 import static qa.guru.niffler.utils.RandomDataUtils.randomUserName;
 
 @ParametersAreNonnullByDefault
-public class UserAPIClient implements qa.guru.niffler.service.UserClient {
+public class UserAPIClient implements UserClient {
 
     private final UserApiClient userApiClient = new UserApiClient();
 
@@ -80,5 +81,10 @@ public class UserAPIClient implements qa.guru.niffler.service.UserClient {
             }
         }
         return friendsList;
+    }
+
+    @Override
+    public List<UserJson> getUsers(@Nullable String username, @Nullable String searchQuery) {
+        return userApiClient.getAllUsers(username, searchQuery);
     }
 }

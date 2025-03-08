@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -74,16 +75,16 @@ public class UserApiClient {
         return response.body();
     }
 
-    public List<UserJson> getAllUsers(String username) {
+    public List<UserJson> getAllUsers(String username, String searchQuery) {
         final Response<List<UserJson>> response;
         try {
-            response = usersUDApi.getUsers(username, null)
+            response = usersUDApi.getUsers(username, searchQuery)
                     .execute();
         } catch (IOException e) {
             throw new AssertionError(e);
         }
         assertEquals(HttpStatus.SC_SUCCESS, response.code());
-        return response.body();
+        return response.body() != null ? response.body() : Collections.emptyList();
     }
 
     public @Nullable UserJson sendInvitation(String targetUsername, String username) {
