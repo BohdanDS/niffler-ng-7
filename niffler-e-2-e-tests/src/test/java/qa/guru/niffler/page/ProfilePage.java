@@ -4,7 +4,6 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 
-
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
@@ -12,9 +11,10 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class ProfilePage extends BasePage<ProfilePage> {
     private final SelenideElement
-            uploadNewImageBtn = $(".css-1f8fote"),
+
             nameInput = $("input[id='name']"),
             saveChangesBtn = $("button[type='submit']"),
+            uploadImageInputField = $("input#image__input"),
             categoryInput = $("#category"),
             showArchivedCheckbox = $("input[type='checkbox']");
     private final ElementsCollection bubbles = $$(".MuiChip-filled.MuiChip-colorPrimary");
@@ -22,11 +22,11 @@ public class ProfilePage extends BasePage<ProfilePage> {
 
     private final ElementsCollection categoryList = $$(".css-17u3xlq");
 
-    private final String PROFILE_UPDATED = "Profile successfully updated";
+    private final static String PROFILE_UPDATED = "Profile successfully updated";
 
 
     public ProfilePage uploadImage(String path) {
-        uploadNewImageBtn.uploadFromClasspath(path);
+        uploadImageInputField.uploadFromClasspath(path);
         return this;
     }
 
@@ -59,6 +59,12 @@ public class ProfilePage extends BasePage<ProfilePage> {
     @Step("Проверка что категория находится в списке")
     public void checkCategoryInCategoryList(String categoryName) {
         categoryList.findBy(text(categoryName)).shouldBe(visible);
+    }
+
+    @Step("Загрузить аватарку профиля")
+    public ProfilePage uploadProfileImage() {
+        uploadImageInputField.uploadFromClasspath("img/profileImage1.png");
+        return this;
     }
 
     @Step("Нажатие кнопки сохранить")

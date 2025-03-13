@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import qa.guru.niffler.page.components.Header;
+import qa.guru.niffler.page.components.SpendingTable;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -17,13 +18,25 @@ public class MainPage extends BasePage<MainPage>{
     private final Header header = new Header();
 
     @Getter
+    private final SpendingTable spendingTable = new SpendingTable();
+
+    @Getter
     private final ElementsCollection tableRows = $("#spendings tbody").$$("tr");
 
     private final SelenideElement statistic = $("#stat"),
+
+    deleteBtn = $("#delete"),
+
             spendings = $("#spendings");
 
     public EditSpendingPage editSpending(String spendingDescription) {
         tableRows.find(text(spendingDescription)).$("td", 5).click();
+
+        return new EditSpendingPage();
+    }
+
+    public EditSpendingPage selectSpending(String spendingDescription) {
+        tableRows.find(text(spendingDescription)).$("td", 1).click();
 
         return new EditSpendingPage();
     }

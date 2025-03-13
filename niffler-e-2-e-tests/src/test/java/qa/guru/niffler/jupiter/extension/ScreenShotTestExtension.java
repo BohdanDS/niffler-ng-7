@@ -11,14 +11,41 @@ import qa.guru.niffler.model.allure.ScreenDiff;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
-public class ScreenShotTestExtension implements ParameterResolver, TestExecutionExceptionHandler {
+public class ScreenShotTestExtension implements AfterEachCallback, ParameterResolver, TestExecutionExceptionHandler {
 
     public static final ObjectMapper objectMapper = new ObjectMapper();
+
+
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(ScreenShotTestExtension.class);
+
+    @Override
+    public void afterEach(ExtensionContext context) throws Exception {
+        AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), ScreenShotTest.class).ifPresent(
+                anno -> {
+                    if (anno.rewriteExpected()) {
+
+                        File expectedFile = new File("src/test/resources/" + anno.value());
+                        try {
+
+                            // Перезаписываем файл
+                            ImageIO.write(getActual(), "png", expectedFile);
+                            System.out.println("123");
+                        } catch (IOException e) {
+                            throw new RuntimeException("Не удалось перезаписать скриншот: " + expectedFile.getAbsolutePath(), e);
+                        }
+
+                    }
+                }
+        );
+
+
+    }
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
@@ -29,7 +56,7 @@ public class ScreenShotTestExtension implements ParameterResolver, TestExecution
     @SneakyThrows
     @Override
     public BufferedImage resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return ImageIO.read(new ClassPathResource("/img/expected-stat.png").getInputStream());
+        return ImageIO.read(new ClassPathResource(extensionContext.getRequiredTestMethod().getAnnotation(ScreenShotTest.class).value()).getInputStream());
     }
 
     @Override
@@ -43,6 +70,12 @@ public class ScreenShotTestExtension implements ParameterResolver, TestExecution
                 "Screenshot diff",
                 "application/vnd.allure.image.diff",
                 objectMapper.writeValueAsString(screenDiff)
+        );
+        Allure.addAttachment(
+                "Screenshot actual",
+                "image/png",
+                new ByteArrayInputStream(imageToBytes(getActual())),
+                "png"
         );
         throw throwable;
     }
@@ -79,4 +112,5 @@ public class ScreenShotTestExtension implements ParameterResolver, TestExecution
             throw new RuntimeException(e);
         }
     }
+
 }
