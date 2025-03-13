@@ -9,12 +9,20 @@ public class EditSpendingPage extends BasePage<EditSpendingPage> {
 
     private final SelenideElement
             descriptionInput = $("#description"),
+            amountInput = $("#amount"),
             saveBtn = $("#save");
 
     @Step("Обновить описание")
     public EditSpendingPage updateDescription(String newDescription){
         descriptionInput.clear();
         descriptionInput.setValue(newDescription);
+
+        return this;
+    }
+    @Step("Обновить сумму")
+    public EditSpendingPage updateAmount(String amount){
+        amountInput.clear();
+        amountInput.setValue(amount);
 
         return this;
     }

@@ -3,20 +3,24 @@ package qa.guru.niffler.page.components;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import qa.guru.niffler.page.EditSpendingPage;
 
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
+@Getter
 public class SpendingTable {
     private final SelenideElement self = $("#spendings tbody");
     private final ElementsCollection tableRows = self.$$("tr");
     private final SelenideElement periodInput = $("#period");
     private final ElementsCollection dropdownList = $$("ul[role=listbox]");
-    private final SelenideElement deleteBtn = $("#delete");
+    private final SelenideElement deleteBtn = $("#delete"),
+            popup = $("div[role='dialog']");
     private final Search searchField = new Search();
 
     @Step("Фильтр таблицы по периоду: {period}")
@@ -34,8 +38,9 @@ public class SpendingTable {
 
     @Step("Удаляем трату с описанием: {description}")
     public SpendingTable deleteSpending(String description) {
-        findSpendingRow(description).$$("td").get(5).click();
+        findSpendingRow(description).$$("td").get(0).click();
         deleteBtn.click();
+        popup.$(byText("Delete")).click();
         return this;
     }
 

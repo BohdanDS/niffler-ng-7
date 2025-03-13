@@ -4,6 +4,7 @@ import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
 import qa.guru.niffler.config.Config;
 import qa.guru.niffler.jupiter.annotation.Category;
+import qa.guru.niffler.jupiter.annotation.ScreenShotTest;
 import qa.guru.niffler.jupiter.extension.meta.User;
 import qa.guru.niffler.model.CategoryJson;
 import qa.guru.niffler.model.UserJson;
@@ -11,7 +12,15 @@ import qa.guru.niffler.page.LoginPage;
 import qa.guru.niffler.page.MainPage;
 import qa.guru.niffler.page.ProfilePage;
 import qa.guru.niffler.page.components.Header;
+import qa.guru.niffler.utils.ScreenDiffResult;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
+
+import static com.codeborne.selenide.Selenide.$;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static qa.guru.niffler.utils.RandomDataUtils.randomCategoryName;
 import static qa.guru.niffler.utils.RandomDataUtils.randomName;
 
@@ -79,4 +88,19 @@ public class ProfileTest {
                 .verifySuccessPopUp();
 
     }
+
+    @User
+    @ScreenShotTest(value = "img/wwww.jpg")
+    void checkProfileAvatarTest(UserJson user, BufferedImage expectedImage) throws IOException {
+        loginPage.login(user.username(), user.testData().password()).checkSuccessLogin();
+        mainPage.getHeader().clickOnProfileIcon().toProfilePage()
+                .uploadProfileImage()
+                .saveChanges();
+
+        BufferedImage actualImage = ImageIO.read(Objects.requireNonNull($(".MuiAvatar-img").screenshot()));
+
+        assertFalse(new ScreenDiffResult(expectedImage, actualImage));
+
+    }
+
 }
