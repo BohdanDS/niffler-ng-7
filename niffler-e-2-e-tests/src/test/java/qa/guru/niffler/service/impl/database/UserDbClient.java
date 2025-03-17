@@ -11,8 +11,8 @@ import qa.guru.niffler.data.entity.userdata.CurrencyValues;
 import qa.guru.niffler.data.entity.userdata.UserEntity;
 import qa.guru.niffler.data.repository.AuthUserRepository;
 import qa.guru.niffler.data.repository.UdUserRepository;
-import qa.guru.niffler.data.repository.impl.AuthUserRepositoryHibernate;
-import qa.guru.niffler.data.repository.impl.UdUserRepositoryHibernate;
+import qa.guru.niffler.data.repository.impl.AuthUserRepositorySpringJdbc;
+import qa.guru.niffler.data.repository.impl.UdUserRepositorySpringJdbc;
 import qa.guru.niffler.data.tpl.XaTransactionTemplate;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.service.UserClient;
@@ -27,8 +27,8 @@ public class UserDbClient implements UserClient {
     private static final Config CFG = Config.getInstance();
     private static final PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-    private final AuthUserRepository authUserRepository = new AuthUserRepositoryHibernate();
-    private final UdUserRepository udUserRepository = new UdUserRepositoryHibernate();
+    private final AuthUserRepository authUserRepository = new AuthUserRepositorySpringJdbc();
+    private final UdUserRepository udUserRepository = new UdUserRepositorySpringJdbc();
 
     private final XaTransactionTemplate xaTxTemplate = new XaTransactionTemplate(
             CFG.authJdbcUrl(),

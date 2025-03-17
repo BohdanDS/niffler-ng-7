@@ -32,10 +32,7 @@ public class ScreenShotTestExtension implements AfterEachCallback, ParameterReso
 
                         File expectedFile = new File("src/test/resources/" + anno.value());
                         try {
-
-                            // Перезаписываем файл
                             ImageIO.write(getActual(), "png", expectedFile);
-                            System.out.println("123");
                         } catch (IOException e) {
                             throw new RuntimeException("Не удалось перезаписать скриншот: " + expectedFile.getAbsolutePath(), e);
                         }
