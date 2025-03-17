@@ -15,6 +15,7 @@ import qa.guru.niffler.utils.ScreenDiffResult;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 import static com.codeborne.selenide.Selenide.$;
 import static java.lang.Thread.sleep;
@@ -36,7 +37,6 @@ public class SpendingWebTest {
     @ScreenShotTest("/img/expected-stat.png")
     public void changeCategoryDescriptionFromTableViewTest(UserJson user, BufferedImage expected) throws IOException, InterruptedException {
 
-
         final String newDescription = "Css course";
 
         Selenide.open("http://127.0.0.1:9000/", LoginPage.class)
@@ -47,11 +47,32 @@ public class SpendingWebTest {
                 checkUpdatedDescription(newDescription);
         sleep(1000);
 
-        BufferedImage actual = ImageIO.read($("canvas[role='img']").screenshot());
-
+        BufferedImage actual = ImageIO.read(Objects.requireNonNull($("canvas[role='img']").screenshot()));
 
         assertFalse(new ScreenDiffResult(expected, actual));
 
+    }
+
+
+    @User(
+            spendings = @Spending(amount = 79990, category = "test-category", description = "des")
+    )
+    @ScreenShotTest("/img/stat-updated.png")
+    public void checkStatComponentAfterSpendingUpdateTests(UserJson user, BufferedImage expected) throws IOException, InterruptedException {
+
+        final String amount = "999";
+
+        Selenide.open("http://127.0.0.1:9000/", LoginPage.class)
+                .login(user.username(), user.testData().password())
+                .editSpending(user.testData().spends().getFirst().description())
+                .updateAmount(amount)
+                .clickSaveBtn().
+                checkUpdatedDescription(amount);
+        Thread.sleep(1000);
+
+        BufferedImage actual = ImageIO.read(Objects.requireNonNull($("canvas[role='img']").screenshot()));
+
+        assertFalse(new ScreenDiffResult(expected, actual));
 
     }
 
@@ -66,5 +87,27 @@ public class SpendingWebTest {
                 .saveChange()
                 .checkAlertMessage(SPENDING_CREATED)
                 .checkSpendingInTable(spendingCategory);
+    }
+
+    @User(
+            spendings = {
+                    @Spending(amount = 79990, category = "test-category", description = "spending-1"),
+                    @Spending(amount = 79990, category = "test-category", description = "spending-2"),
+                    @Spending(amount = 79990, category = "test-category", description = "spending-3")
+            }
+    )
+    @ScreenShotTest("/img/stat-after-remove.png")
+    public void checkStatComponentAfterRemovingSpendingTests(UserJson user, BufferedImage expected) throws IOException, InterruptedException {
+
+
+        Selenide.open("http://127.0.0.1:9000/", LoginPage.class)
+                .login(user.username(), user.testData().password())
+                .getSpendingTable().deleteSpending((user.testData().spends().getFirst().description()));
+        Thread.sleep(1000);
+
+        BufferedImage actual = ImageIO.read(Objects.requireNonNull($("canvas[role='img']").screenshot()));
+
+        assertFalse(new ScreenDiffResult(expected, actual));
+
     }
 }
