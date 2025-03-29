@@ -7,7 +7,7 @@ import qa.guru.niffler.jupiter.extension.meta.User;
 import qa.guru.niffler.model.TestData;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.service.UserClient;
-import qa.guru.niffler.service.impl.database.UserDbClient;
+import qa.guru.niffler.service.impl.api.UserAPIClient;
 import qa.guru.niffler.utils.RandomDataUtils;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class UserExtension implements BeforeEachCallback, ParameterResolver {
     public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(UserExtension.class);
     private static final String defaultPassword = "123";
 
-    private final UserClient usersClient = new UserDbClient();
+    private final UserClient usersClient = new UserAPIClient();
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
