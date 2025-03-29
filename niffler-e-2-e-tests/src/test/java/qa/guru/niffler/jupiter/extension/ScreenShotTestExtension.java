@@ -58,22 +58,24 @@ public class ScreenShotTestExtension implements AfterEachCallback, ParameterReso
 
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
-        ScreenDiff screenDiff = new ScreenDiff(
-                "data:image/png;base64," + Base64.getEncoder().encodeToString(imageToBytes(getExpected())),
-                "data:image/png;base64," + Base64.getEncoder().encodeToString(imageToBytes(getActual())),
-                "data:image/png;base64," + Base64.getEncoder().encodeToString(imageToBytes(getDiff()))
-        );
-        Allure.addAttachment(
-                "Screenshot diff",
-                "application/vnd.allure.image.diff",
-                objectMapper.writeValueAsString(screenDiff)
-        );
-        Allure.addAttachment(
-                "Screenshot actual",
-                "image/png",
-                new ByteArrayInputStream(imageToBytes(getActual())),
-                "png"
-        );
+        if (throwable.getMessage().contains("Screen comparison failure")){
+            ScreenDiff screenDiff = new ScreenDiff(
+                    "data:image/png;base64," + Base64.getEncoder().encodeToString(imageToBytes(getExpected())),
+                    "data:image/png;base64," + Base64.getEncoder().encodeToString(imageToBytes(getActual())),
+                    "data:image/png;base64," + Base64.getEncoder().encodeToString(imageToBytes(getDiff()))
+            );
+            Allure.addAttachment(
+                    "Screenshot diff",
+                    "application/vnd.allure.image.diff",
+                    objectMapper.writeValueAsString(screenDiff)
+            );
+            Allure.addAttachment(
+                    "Screenshot actual",
+                    "image/png",
+                    new ByteArrayInputStream(imageToBytes(getActual())),
+                    "png"
+            );
+        }
         throw throwable;
     }
 
