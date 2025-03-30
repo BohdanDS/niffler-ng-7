@@ -2,6 +2,7 @@ package qa.guru.niffler.test.web;
 
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
+import qa.guru.niffler.condition.Bubble;
 import qa.guru.niffler.condition.Color;
 import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.jupiter.annotation.ScreenShotTest;
@@ -11,6 +12,7 @@ import qa.guru.niffler.jupiter.extension.meta.WebTest;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
 import qa.guru.niffler.page.MainPage;
+import qa.guru.niffler.page.components.SpendingTable;
 import qa.guru.niffler.page.components.StatComponent;
 import qa.guru.niffler.utils.ScreenDiffResult;
 
@@ -130,7 +132,79 @@ public class SpendingWebTest {
 
         assertFalse(new ScreenDiffResult(expected, statComponent.chartScreenshot()), "Screen comparison failure");
 
-        statComponent.checkBubbles(Color.yellow);
+        statComponent.checkBubbles(new Bubble(Color.yellow, "79990"));
 
+    }
+
+    @User(
+            spendings =
+                    {
+                            @Spending(
+                                    category = "Обучение",
+                                    description = "Обучение Advanced 2.0",
+                                    amount = 79990
+                            ),
+                            @Spending(
+                                    category = "Рыбалка",
+                                    description = "Рыбалка на Неве",
+                                    amount = 1000
+                            )
+                    }
+    )
+    @Test
+    public void checkBubblesTest(UserJson user)  {
+        StatComponent statComponent = Selenide.open("http://127.0.0.1:9000/", LoginPage.class)
+                .login(user.username(), user.testData().password())
+                .getStatComponent();
+
+        statComponent.checkBubbles(new Bubble(Color.yellow, "79990"), new Bubble(Color.green, "1000"));
+    }
+
+    @User(
+            spendings =
+                    {
+                            @Spending(
+                                    category = "Обучение",
+                                    description = "Обучение Advanced 2.0",
+                                    amount = 79990
+                            ),
+                            @Spending(
+                                    category = "Рыбалка",
+                                    description = "Рыбалка на Неве",
+                                    amount = 1000
+                            )
+                    }
+    )
+    @Test
+    public void checkBubblesInAnyOrderTest(UserJson user) {
+        StatComponent statComponent = Selenide.open("http://127.0.0.1:9000/", LoginPage.class)
+                .login(user.username(), user.testData().password())
+                .getStatComponent();
+
+        statComponent.checkBubblesInAnyOrder(new Bubble(Color.green, "Рыбалка 1000 ₽"), new Bubble(Color.yellow, "Обучение 79990 ₽"));
+    }
+
+    @User(
+            spendings =
+                    {
+                            @Spending(
+                                    category = "Обучение",
+                                    description = "Обучение Advanced 2.0",
+                                    amount = 79990
+                            ),
+                            @Spending(
+                                    category = "Рыбалка",
+                                    description = "Рыбалка на Неве",
+                                    amount = 1000
+                            )
+                    }
+    )
+    @Test
+    public void checkSpendsInTableTest(UserJson user) {
+        SpendingTable spendingTable = Selenide.open("http://127.0.0.1:9000/", LoginPage.class)
+                .login(user.username(), user.testData().password())
+                        .getSpendingTable();
+
+        spendingTable.checkSpendsInTable(user.testData().spends());
     }
 }

@@ -4,7 +4,10 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import qa.guru.niffler.model.SpendJson;
 import qa.guru.niffler.page.EditSpendingPage;
+
+import java.util.List;
 
 import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.text;
@@ -12,6 +15,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static qa.guru.niffler.condition.SpendConditions.spends;
 
 @Getter
 public class SpendingTable {
@@ -60,5 +64,10 @@ public class SpendingTable {
     private SelenideElement findSpendingRow(String description) {
         searchField.search(description);
         return tableRows.find(text(description));
+    }
+    @Step("Проверить отоброжение всех spends в таблице")
+    public SpendingTable checkSpendsInTable(List<SpendJson> spendsList){
+       tableRows.should(spends(spendsList));
+        return this;
     }
 }
