@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import qa.guru.niffler.page.components.Header;
 import qa.guru.niffler.page.components.SpendingTable;
+import qa.guru.niffler.page.components.StatComponent;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -19,6 +20,9 @@ public class MainPage extends BasePage<MainPage>{
 
     @Getter
     private final SpendingTable spendingTable = new SpendingTable();
+
+    @Getter
+    private final StatComponent statComponent = new StatComponent();
 
     @Getter
     private final ElementsCollection tableRows = $("#spendings tbody").$$("tr");

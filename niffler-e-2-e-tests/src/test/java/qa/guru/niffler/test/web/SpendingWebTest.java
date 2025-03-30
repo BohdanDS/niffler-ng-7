@@ -2,6 +2,7 @@ package qa.guru.niffler.test.web;
 
 import com.codeborne.selenide.Selenide;
 import org.junit.jupiter.api.Test;
+import qa.guru.niffler.condition.Color;
 import qa.guru.niffler.jupiter.annotation.Category;
 import qa.guru.niffler.jupiter.annotation.ScreenShotTest;
 import qa.guru.niffler.jupiter.annotation.Spending;
@@ -10,6 +11,7 @@ import qa.guru.niffler.jupiter.extension.meta.WebTest;
 import qa.guru.niffler.model.UserJson;
 import qa.guru.niffler.page.LoginPage;
 import qa.guru.niffler.page.MainPage;
+import qa.guru.niffler.page.components.StatComponent;
 import qa.guru.niffler.utils.ScreenDiffResult;
 
 import javax.imageio.ImageIO;
@@ -108,6 +110,27 @@ public class SpendingWebTest {
         BufferedImage actual = ImageIO.read(Objects.requireNonNull($("canvas[role='img']").screenshot()));
 
         assertFalse(new ScreenDiffResult(expected, actual));
+
+    }
+
+    @User(
+            categories = @Category(name = "", archived = true),
+            spendings = @Spending(amount = 79990, category = "test-category", description = "des")
+    )
+    @ScreenShotTest("/img/expected-stat.png")
+    public void checkStatComponentTest(UserJson user, BufferedImage expected) throws IOException, InterruptedException {
+
+
+        StatComponent statComponent = Selenide.open("http://127.0.0.1:9000/", LoginPage.class)
+                .login(user.username(), user.testData().password())
+                .getStatComponent();
+
+
+        Thread.sleep(3000);
+
+        assertFalse(new ScreenDiffResult(expected, statComponent.chartScreenshot()), "Screen comparison failure");
+
+        statComponent.checkBubbles(Color.yellow);
 
     }
 }
